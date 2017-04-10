@@ -1,0 +1,39 @@
+<?php
+$db['special_remind']=array(
+    'columns'=>array(
+        'remind_id'=>array(
+            'type'=>'number',
+            'required' => true,
+            'pkey'=>true,
+            'extra'=>'auto_increment',
+        ),
+        'member_id'=>array(
+            'type'=>'number',
+        ),
+        'product_id'=>array(
+            'type'=>'number',
+        ),
+        'type_id'=>array(
+            'type'=>'number',
+        ),
+        'goodsname'=>array(
+            'type'=>'varchar(50)',
+            ),
+        'remind_way'=>array(
+            'type'=>'varchar(50)',
+        ),
+        'goal'=>array(
+            'type'=>'varchar(50)',
+        ),
+        'savetime'=>array(
+            'type'=>'time',
+        ),
+        'remind_time'=>array(
+            'type'=>'time',
+            ),
+        'begin_time'=>array(
+            'type'=>'time',
+            ),
+
+    ),
+);

@@ -1,0 +1,27 @@
+<div class="sub-slide" id="sub_slide">
+    <span class="go-left"></span>
+    <span class="go-right"></span>
+    <div class="slide-box">
+        <ul class="slide-list">
+            <{foreach from=$data.pic item=parent key=parentId}>
+            <li class="slide-item">
+            <a href="<{$parent.linktarget}>">
+                <img src="<{$parent.link}>" width="165px" height="158pxpx" title="<{$data.linkinfo}>"/>
+            </a>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    new Slide('sub_slide',{
+        autoplay:false,
+        haslrbtn:true,
+        effect:'scrollx',
+        hasTriggers:false,
+        panels:'.slide-item',
+        prev:'.go-left',
+        next:'.go-right',
+        viewStep:4
+    });
+</script>

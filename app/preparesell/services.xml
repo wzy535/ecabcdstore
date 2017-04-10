@@ -1,0 +1,33 @@
+<services>
+   
+    <service id="desktop_finder.preparesell_mdl_preparesell">
+        <class>preparesell_finder_preparesell</class>
+    </service>
+    <service id="prepare_goods">
+        <class>preparesell_prepare_goods</class>
+    </service>
+    <service id="prepare_prepare">
+        <class>preparesell_prepare_prepare</class>
+    </service>
+    <service id="prepare_order">
+        <class>preparesell_prepare_order</class>
+    </service>
+    <service id="b2c_cart_process_apps">
+        <class>preparesell_cart_process_special</class>
+    </service>
+     <service id="firevent_type">
+        <class>preparesell_service_firevent_action</class>
+    </service>
+    <service id="b2c_order_cancel_finish" optname="预售订单作废完成库存处理">
+        <class>preparesell_prepare_ordercancel</class>
+    </service>
+    <service id="b2c_order_create_finish" optname="预售订单完成库存处理">
+        <class>preparesell_prepare_ordercreate</class>
+    </service>
+    <service id="b2c_mdl_goods.filter" optname="预售排他">
+        <class>preparesell_prepare_promotion</class>
+    </service> 
+    <service id="b2c_allow_delete_goods">
+        <class>preparesell_prepare_goods</class>
+    </service>
+</services>

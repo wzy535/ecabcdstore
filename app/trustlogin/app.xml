@@ -1,0 +1,14 @@
+<app>
+    <name>信任登录配置</name>
+    <description>提供一个多种方式的会员登录</description>
+
+    <author>
+        <name>shopex开发团队</name>
+        <email>dev@shopex.cn</email>
+        <url>http://www.shopex.cn</url>
+    </author>
+
+    <version>0.2</version>
+    <license>shopex license</license>
+
+</app>

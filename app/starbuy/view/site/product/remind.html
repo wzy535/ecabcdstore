@@ -1,0 +1,31 @@
+<div class="groupbuy-remind">
+    <form action="<{link app=starbuy ctl=site_special act=save_remind}>" method="post">
+    <ul class="form-group">
+      <li class="form-item">
+        <!-- <div class="form-controls"><input class="x-input" type="text" name="" id="" vtype="required&&mobile" data-caution="您输入的信息有误" placeholder="请输入手机号码"></div> -->
+      </li>
+      <li class="form-item">
+      <div class="form-controls">
+
+          <input type="hidden" name="product_id" value="<{$product_id}>">
+          <input type="hidden" name="type_id" value="<{$type_id}>">
+          <input type="hidden" name="member_id" value="<{$member_id}>">
+          <input type="hidden" name="remind_time" value="<{$remind_time}>">
+          <input type="hidden" name="begin_time" value="<{$begin_time}>">
+          <{if $remind_type.email_remind}>
+          <input class="x-input" type="text" name="goal" id="" vtype="required&&email" data-caution="您输入的信息有误" placeholder="请输入邮箱地址">
+          <{elseif $remind_type.sms_remind}>
+          <input class="x-input" type="text" name="goal" id="" vtype="required&&mobile" data-caution="您输入的信息有误" placeholder="请输入邮箱地址">
+          <{elseif $remind_type.all_remind}>
+          <input class="x-input" type="text" name="goal" id="" vtype="required" data-caution="您输入的信息有误" placeholder="请输入邮箱地址或者手机号">
+          <{else}>
+          <input class="x-input" type="text" name="goal" id="" vtype="" disabled="disabled" data-caution="您输入的信息有误" placeholder="提醒会以站内信的方式发送,请及时查收">
+          <{/if}>
+      </div>
+      </li>
+      <li class="form-item">
+        <div class="form-actions"><button type="submit" class="btn btn-caution act-subscribe" rel="_request"><span><span>订阅</span></span></button></div>
+      </li>
+    </ul>
+  </form>
+</div>

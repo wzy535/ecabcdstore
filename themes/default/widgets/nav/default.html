@@ -1,0 +1,20 @@
+<ul class="nav-list clearfix">
+    <{foreach from=$data item=item key=key name=wgtmenu}>
+    <{if $item.custom_url neq ''}>
+    <li class="nav-item"><a href="<{$item.custom_url}>" <{if $item.target_blank eq 'true'}>target="_blank"<{/if}>><{$item.title}></a></li>
+    <{else}>
+    <li class="nav-item"><a href="<{link app=$item.app ctl=$item.ctl act=$item.act args=$item.params full=1 }>" <{if $item.target_blank eq 'true'}>target="_blank"<{/if}>><{$item.title}></a></li>
+    <{/if}>
+    <{/foreach}>
+</ul>
+<script>
+    (function(){
+        var url =location.href.split('/').getLast();
+        if(!url.trim().length || url == 'index.php' || url == 'index') url='index.php/index';
+        var reg=new RegExp('\/'+url,'i');
+        var menulist = $$('.nav-item a');
+        menulist.each(function(el){
+            if(el&&el.href.test(reg))el.addClass('active');
+        });
+    })();
+</script>

@@ -1,0 +1,92 @@
+<form id="preparesell_form"  method='post' action="index.php?app=preparesell&ctl=admin_delprepare&act=to_del">
+<{foreach from=$prepare_id item=pre_id}>
+ <input type="hidden" name="prepare_id[]" value="<{$pre_id}>"> 
+ <{/foreach}>
+<h3><{t}>删除过期数据<{/t}></h3>
+<div id="x-g-basic" class="goods-detail">
+    <div class="tableform">
+            
+		<table border="0" cellpadding="0" cellspacing="0">
+		    <tr>
+                 <td align="center">
+                    <h7><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">
+                        活动商品目前正处于无库存也可销售状态,是否确认删除规则，并关闭商品无库存也可销售
+                    <span>
+                    </h7>
+                 </td>
+            </tr>
+            <tr>
+                 <td  align="center"><input type="hidden" name='is_del' id="is_del"></td>
+                
+            </tr>
+            
+		</table>
+
+        <table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody><tr valign="middle">
+        <td>
+            
+            <button type="button" id="no_btn" class="btn btn-primary" onclick="submitForm(event,1)"><span><span>删除但不关闭</span></span></button>
+            <button type="button" id="is_btn" class="btn btn-primary" onclick="submitForm(event,2)"><span><span>删除并关闭</span></span></button>
+        </td>
+        </tr>
+        </tbody></table>
+    </div>
+</div>
+
+</form>
+
+<script>
+
+  var submitForm = function (event,sign){
+        var _form=$('preparesell_form');
+        var no_btn =$('no_btn');
+        var is_btn =$('is_btn');
+        switch (sign){
+            case 1:
+            $('is_del').set('value','true');
+            var target={
+                onComplete:function(rs){
+                    var hash_res_obj = JSON.decode(rs);
+
+                    if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+                    {
+                        try{
+                            var _dialogIns = no_btn.getParent('.dialog').retrieve('instance');
+                        }catch(e){}
+
+                        if(_dialogIns)
+                        {
+                            _dialogIns.close();
+                            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+                        }
+                    }
+            }};
+            break;
+            case 2:
+            $('is_del').set('value','false');
+            var target={
+                onComplete:function(rs){
+                    var hash_res_obj = JSON.decode(rs);
+
+                    if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+                    {
+                        try{
+                            var _dialogIns = is_btn.getParent('.dialog').retrieve('instance');
+                        }catch(e){}
+
+                        if(_dialogIns)
+                        {
+                            _dialogIns.close();
+                            window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+                        }
+                    }
+            }};
+            break;
+        }
+        _form.store('target',target);
+        _form.fireEvent('submit',new Event(event));
+       
+    };
+
+</script>

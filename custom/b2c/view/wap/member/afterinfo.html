@@ -1,0 +1,110 @@
+<header>
+	<div class="a-bar">
+		<a href="javascript:history.back()" class="a-back">
+           	<i class="arr left"></i>
+            返回
+		</a>
+		<div class="a-name">
+			售后申请
+		</div>
+	</div>
+</header>
+<div class="full-screen">
+<form action="<{link app=b2c ctl=wap_member act=return_save}>" method="post" enctype="multipart/form-data" encoding="multipart/form-data" target="upload">
+
+	<div class="m-after">
+		<div class="section s-after after-form">
+			<p class="s-head">选择售后类型</p>
+
+			<!--<span type="radio" class="form" name="type" value="1" >退货</span>
+			<span type="radio" class="form f-current" name="type" value="2"  >换货</span>
+		     -->
+		     <input type="hidden" name="order_id" value="<{$order_id}>">
+              <input type="radio" name="type" value="1" id="return" vtype="required" data-caution="请填写退换理由" checked="checked"><label for="return">退货</label>
+              <input type="radio" name="type" value="2" id="exchange" vtype="required" data-caution="请填写换货理由"><label for="exchange">换货</label>
+
+		</div>
+		<div class="section s-after after-goods">
+			<p class="s-head">选择申请数量</p>
+			<ul class="after-list">
+	          <{foreach from=$order.items item=item key=key name=name}>	
+	          <input type="hidden" name="product_name[<{$item.products.product_id}>]" value=<{$item.name}> >
+	          <input type="hidden" name="product_price[<{$item.products.product_id}>]" value=<{$item.price}> >
+				<li class="after-item">
+					<div class="g-line">
+						<div class="gline-checkbox">
+							<input  id="gCheck"  >
+							<label  type="checkbox"class="c-current" for="gCheck" name="product_bn[<{$item.products.product_id}>]" value='<{$item.bn}>'></label>
+						</div>
+						<div class="gline-img">
+							<a href="<{$item.link_url}>">
+								<img src="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager:'s'}>" alt="<{$item.name}>&nbsp;<{$item.attr}>">
+							</a>
+						</div>
+						<div class="gline-info">
+							<p class="gname"><{$item.name}></p>
+							<div class="gnumber">
+								<span class="gminus g-btn">-</span>
+								<div class="gnum">
+									<input type="text" class="ipt" value="1" name="product_nums[<{$item.products.product_id}>]">
+								</div>
+								<span class="gmaxus g-btn">+</span>
+								<p class="g-max">最大<{$item.quantity}>件</p>
+							</div>
+						</div>
+					</div>
+				</li>
+              <{/foreach}>
+			</ul>
+		</div>
+		<div class="section s-after">
+			<p class="s-head">填写申请理由</p>
+			<textarea name="title" id="" cols="30" rows="10"></textarea>
+		</div>
+		<div class="section s-after">
+			<p class="s-head another">详细描述</p>
+			<textarea name="content" id="" cols="30" rows="10"></textarea>
+		</div>
+		<div class="section s-after a-footer">
+			<!--
+			<div class="gline-checkbox">
+				<input type="checkbox" id="gCheck-a">
+				<label class="c-current" for="gCheck-a"></label>
+			</div>
+			-->
+			<input type="checkbox" checked="checked" name="agree" > 同意
+			<p>我已阅读并同意遵守<a href="">《售后服务协议》</a></p>
+			<div class="btn">
+				 <{button type="submit" class="btn-caution" label="提交申请"}>
+				<!--<a href="" class="b-btn">提交申请</a>-->
+			</div>
+		</div>
+	</div>
+</div>
+
+</form>
+<script type="text/javascript">
+	$(".form").click(function(){
+		$(this).addClass('f-current').siblings('.form').removeClass('f-current');
+	})
+	$(".gline-checkbox").children('label').click(function(){
+		$(this).toggleClass('c-current');
+	})
+	
+  $(".gmaxus").click(function(event) { 
+  	var that = $(this).siblings('.gnum').children('.ipt')
+      num=that.val();    
+      num++;
+      that.val(num);
+  });
+  $(".gminus").click(function(event) {
+  	var that = $(this).siblings('.gnum').children('.ipt')
+      num=that.val(); 
+      if(num==1){
+         that.val(1);
+      }else{
+      num--;
+      that.val(num);     
+      };
+  });
+</script>

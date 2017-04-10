@@ -1,0 +1,13 @@
+<cronentries>
+    <cron id='preparesell_tasks_preparemind'>
+        <description>预售活动提醒</description>
+        <schedule>5 * * * *</schedule>
+        <enable>false</enable>
+    </cron>
+	<cron id="preparesell_tasks_cancelorder">
+	    <description>取消过期预售订单</description>
+	    <schedule>15 * * * *</schedule>
+	    <enabled>false</enabled>
+	</cron>
+
+</cronentries>

@@ -1,0 +1,79 @@
+<div class="header">
+    <div class="topbar">
+        <div class="page">
+            <div class="login-bar">
+                <{widgets id="login_bar"}>
+            </div>
+            <div class="member-link">
+                <{widgets id="member_link"}>
+            </div>
+        </div>
+    </div>
+    <div class="header-main">
+        <div class="page">
+            <div class="logo">
+                <{widgets id="logo"}>
+            </div>
+            <div class="search clearfix">
+                <{widgets id="search"}>
+            </div>
+            <div class="header-ad">
+                <{widgets id="header_ad"}>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <div class="page">
+            <div class="all-category">
+                <div class="category-handle" id="category_handle">
+                    所有商品分类
+                    <span class="ar"></span>
+                </div>
+                <div class="category-box" id="category_box" style="visibility:hidden;">
+                    <{widgets id="all_category"}>
+                </div>
+            </div>
+            <div class="nav">
+                <{widgets id="nav"}>
+            </div>
+            <div class="cart-bar clearfix">
+                <{widgets id="cart_bar"}>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function(){
+            var url =location.href.split('/').getLast(), n=url.lastIndexOf('-');
+            if(n>-1)url=url.substring(0,n);
+            if(!url.trim().length) url='index';
+            var reg=new RegExp('index','i');
+            if(url.test(reg)){
+                $('category_box').setStyle('visibility','visible');
+            }else{
+                if($('category_handle')){
+                    var DropLabel = $('category_handle');
+                    var DropCategory = $('category_box');
+                    $(document).addEvent('mouseover',function(e){
+                        if(e.target.getParent('#category_box') == DropCategory || e.target == DropLabel){
+                            DropCategory.setStyle('visibility','visible');
+                            }else{
+                            DropCategory.setStyle('visibility','hidden');
+                        }
+                    });
+                }
+            }
+            addEvent('domready',function(){
+                function resize(){
+                    var b = $$('body')[0];
+                    if($(window).getWidth() < 1225){
+                        b.addClass('min-page');
+                    }else{
+                        b.removeClass('min-page');
+                    }
+                }
+                addEvent('resize',resize);
+                resize();
+            });
+        })();
+    </script>
+</div>

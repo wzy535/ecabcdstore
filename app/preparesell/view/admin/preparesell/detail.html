@@ -1,0 +1,43 @@
+<div class="tableform">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+    <col style="width:20%"></col>
+    <col style="width:10%"></col>
+    <col class="Colgoodsid"></col>
+    <col class="Colgoodsid"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <thead>
+        <th><{t}>商品名称<{/t}></th>
+        <th><{t}>前台访问地址<{/t}></th>
+        <th><{t}>货品编号<{/t}></th>
+        <th><{t}>预售库存 <{/t}></th>
+        <th><{t}>订金<{/t}></th>
+        <!-- <th><{t}>尾款<{/t}></th> -->
+        <th><{t}>销售价<{/t}></th>
+        <th><{t}>预售订金开始时间<{/t}></th>
+        <th><{t}>预售订金结束时间<{/t}></th>
+        <th><{t}>尾款支付开始时间<{/t}></th>
+        <th><{t}>尾款支付结束时间<{/t}></th>
+    </thead>
+    <tbody>
+        <{foreach from=$reparesell_goods item=product}>
+        <td><{$product.name}></td>
+       <td><a href="<{$url}>" target="_blank">前台查看</a></td>
+        <td><{$product.bn}></td>
+         <td><{$product.initial_num}></td>
+       <td><{$product.preparesell_price|cur}></td>
+   <!--     <td><{$product.price-$product.preparesell_price|cur}></td> -->
+       <td><{$product.price|cur}></td>
+        <td class="textleft">
+        <{$product.begin_time|cdate:FDATE_STIME}>&nbsp;
+        </td>
+        <td><{$product.end_time|cdate:FDATE_STIME}></td>
+        <td><{$product.begin_time_final|cdate:FDATE_STIME}></td>
+        <td><{$product.end_time_final|cdate:FDATE_STIME}></td>
+       
+        </tr>
+        <{/foreach}>
+    </tbody>
+    </table>
+</div>

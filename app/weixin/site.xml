@@ -1,0 +1,7 @@
+<site>
+    <module controller='site_qrcode'>
+        <name>qrcode</name>
+        <title>生成二维码</title>
+        <disable>false</disable>
+    </module>
+</site>

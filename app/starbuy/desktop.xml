@@ -1,0 +1,13 @@
+<desktop>
+    <permissions>
+        <permission id="starbuy" display='true'>团购</permission>
+    </permissions>
+
+    <workground name="营销" id="b2c.wrokground.sale" controller="admin_sales_order" action="index" order="40">
+        <menugroup name="促销">
+            <menu controller='admin_promotion' action='index' permission='starbuy' display='true' order='50'>组合促销</menu>
+            <!-- <menu controller='admin_promotions_type' action='index' permission='starbuy' display='true' order='10'>促销标签</menu> -->
+        </menugroup>
+    </workground>
+        
+</desktop>

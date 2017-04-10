@@ -1,0 +1,20 @@
+<services>
+    <service id="desktop_finder.trustlogin_mdl_trustlogin_cfg">
+        <class>trustlogin_finder_trustlogin_cfg</class>
+    </service>
+
+    <service id="trustlogin_trustlogin.trustlogin_mdl_trustlogin_cfg" optname="登陆插件列表">
+        <class>trustlogin_plugin_taobao</class>
+        <class>trustlogin_plugin_qq</class>
+        <class>trustlogin_plugin_weibo</class>
+        <class>trustlogin_plugin_renren</class>
+        <class>trustlogin_plugin_kaixin</class>
+        <!-- <class>trustlogin_plugin_sohu</class> -->
+        <!-- <class>trustlogin_plugin_baidu</class>
+        <class>trustlogin_plugin_alipay</class>
+        <class>trustlogin_plugin_weixin</class> -->
+    </service>
+    <service id="openapi.trustlogin_api">
+        <class>trustlogin_api</class>
+    </service>
+</services>

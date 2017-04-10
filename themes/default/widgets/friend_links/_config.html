@@ -1,0 +1,23 @@
+<div class="tableform">
+    <div class="division">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th width="20%"><{t}>链接显示方式：<{/t}></th>
+                <td width="30%" >
+                    <label>
+                        <input type="radio" name="selector" value="text" <{if $setting.selector=="text"}>checked<{/if}>/>
+                        <{t}>文字<{/t}>
+                    </label>
+                    <label>
+                        <input type="radio" name="selector" value="img" <{if $setting.selector=="img"}>checked<{/if}>/>
+                        <{t}>图片<{/t}>
+                    </label>
+                </td>
+                <th width="20%" ><{t}>链接显示个数：<{/t}></th>
+                <td width="30%" >
+                    <input type="text" class="x-input" name="limit" value="<{$setting.limit|default:3}>" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

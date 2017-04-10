@@ -1,0 +1,198 @@
+<style type="text/css">
+    .index-goods-config{background:#333333;border-collapse:separate;border-spacing:1px;}
+    .index-goods-config td{background:#FFFFFF;}
+</style>
+<div id="goods_exshow_config" class="tableform">
+    <div class="division">
+        <label>
+        版块classname：
+        </label>
+        <input type="text" class="x-input" name="block_class" value="<{$setting.block_class}>"/>
+    </div>
+    <div class="division">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0">
+            <tr>
+                <td colspan="5">
+                    <table width="100%" border="0" cellspacing="1" cellpadding="0" class="index-goods-config">
+                        <tr>
+                            <td>
+                                <label>
+                                    版块标题：
+                                </label>
+                                <input type="text" name="block_name" class="x-input" value="<{$setting.block_name}>"/>
+                            </td>
+                            <td id="more_link">
+                                <div class="m5">
+                                    <{button label=$___b2c="添加右侧链接"|t:'b2c' id="add_more_link" app="desktop" icon="btn_add.gif"}>
+                                </div>
+                                <{foreach from=$setting.morelink item=item key=key}>
+                                <div class="more-item">
+                                <label>
+                                    关键字:
+                                    <input type="text" class="x-input" name="morelink[<{$key}>][k]" value="<{$item.k}>"/>
+                                </label>
+                                <label>
+                                    链接:
+                                    <input type="text" class="x-input" name="morelink[<{$key}>][v]" value="<{$item.v}>"/>
+                                </label>
+                                <span onclick="$(this).getParent('.more-item').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span>
+                            </div>
+                                <{/foreach}>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td width="20%">
+                    <table width="100%" border="0" cellspacing="1" cellpadding="0" class="index-goods-config">
+                        <tr>
+                            <td style="height:271px">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th><{t app='b2c'}>图片：<{/t}></th>
+                                        <td>
+                                           <input type="text" name='big_pic' id="big_pic" value="<{$setting.big_pic}>" class="x-input"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('big_pic')">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片描述：<{/t}></th>
+                                        <td><input type="text" name="big_pic_txt" value="<{$setting.big_pic_txt}>" class="x-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片链接：<{/t}></th>
+                                        <td><input type="text" name="big_pic_link" value="<{$setting.big_pic_link}>" class="x-input"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height:89px;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th><{t app='b2c'}>图片：<{/t}></th>
+                                        <td>
+                                           <input type="text" name='small_pic1' id="small_pic1" value="<{$setting.small_pic1}>" class="x-input"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic1')">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片描述：<{/t}></th>
+                                        <td><input type="text" name="small_pic1_txt" value="<{$setting.small_pic1_txt}>" class="x-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片链接：<{/t}></th>
+                                        <td><input type="text" name="small_pic1_link" value="<{$setting.small_pic1_link}>" class="x-input"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height:89px;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th><{t app='b2c'}>图片：<{/t}></th>
+                                        <td>
+                                           <input type="text" name='small_pic2' id="small_pic2" value="<{$setting.small_pic2}>" class="x-input"><input type=button value="<{t app='b2c'}>上传图片<{/t}>" class="uploadbtn" onclick="addPic('small_pic2')">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片描述：<{/t}></th>
+                                        <td><input type="text" name="small_pic2_txt" value="<{$setting.small_pic2_txt}>" class="x-input"></td>
+                                    </tr>
+                                    <tr>
+                                        <th><{t app='b2c'}>图片链接：<{/t}></th>
+                                        <td><input type="text" name="small_pic2_link" value="<{$setting.small_pic2_link}>" class="x-input"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="80%" colspan="4">
+                    <table width="100%" border="0" cellspacing="1" cellpadding="0" class="index-goods-config">
+                        <tr>
+                            <td style="height:451px;">
+                                <div class="division">
+                                    <label>
+                                        <p>最多展示数量：</p>
+                                        <input type="text"  name="limit"  value="<{$setting.limit}>" />个商品
+                                    </label>
+                                </div>
+                                <div class="goods-selector-handle clearfix">
+                                    <div class="span-auto">
+                                        <label>
+                                            <input type="radio"  name="selector" value="filter"  <{if $setting.selector=="filter"}>checked<{/if}> />&nbsp;范围选择商品
+                                        </label>
+                                    </div>
+                                    <div class="span-auto">
+                                        <label><input type="radio"  name="selector" value="select"  <{if $setting.selector=="select"}>checked<{/if}> />&nbsp;精确选择商品</label>
+                                    </div>
+                                </div>
+                                <div class="division goods-selector">
+                                    <div data-extend = "filter" <{if $setting.selector=="select"}>style="display:none"<{/if}>> 
+                                        <{input type="goodsfilter"  name="goods_filter"  value=$setting.goods_filter}>
+                                        <div class="division">
+                                            排序规则：
+                                            <select  name="goods_order_by">
+                                                <{foreach from=$data.goods_order_by item=item}>
+                                                <option value="<{$item.condition}>"  <{if $setting.goods_order_by == $item.condition}>selected<{/if}>><{$item.label}></option>
+                                                <{/foreach}>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div data-extend = "select"  <{if $setting.selector=="filter"}>style="display:none;"<{/if}>>
+                                        <{input type="goods_select" 
+                                        object="goods@b2c" 
+                                        pdt_name="goods_select" 
+                                        pdt_value=$setting.goods_select 
+                                        obj_name="goods_select_linkobj"  
+                                        obj_value=$setting.goods_select_linkobj  
+                                        breakpoint=0
+                                        }>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    function addPic(eleid){
+        var url='index.php?app=desktop&act=alertpages&goto='+encodeURIComponent("index.php?app=image&ctl=admin_manage&act=image_broswer&type=big");
+        Ex_Loader('modedialog',function(){
+            return new imgDialog(url,{onCallback:function(image_id,image_src){
+                    $(eleid).value=image_src;
+            }})	;
+        });
+
+    }
+    $$('#goods_exshow_config .goods-selector-handle input[type=radio]').addEvent('change',function(){
+        var radio  = this;
+        if(!radio.checked)return;
+        $$('#goods_exshow_config .goods-selector [data-extend]').each(function(item){
+
+            if(item.get('data-extend')!=radio.value){
+                item.hide();
+                }else{
+                item.show();
+            }
+
+        });
+
+    });
+    function addMoreLink(){
+        var i=new Date().getTime();
+        var linkItem = new Element('div',{
+            'class':'more-item',
+            'html':'<label>关键字:<input type="text" class="x-input" name="morelink['+i+'][k]" value=""/></label><label>链接:<input type="text" class="x-input" name="morelink['+i+'][v]" value=""/></label><span onclick="$(this).getParent(\'.more-item\').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span>'
+        });
+        linkItem.inject($('more_link'));
+    }
+    $('add_more_link').addEvent('click',function(){
+        addMoreLink();
+    });
+</script>

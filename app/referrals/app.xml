@@ -1,0 +1,17 @@
+<app>
+    <name>用户推荐</name>
+    <description>用户推荐</description>
+
+    <author>
+        <name>shopex开发团队</name>
+        <email>dev@shopex.cn</email>
+        <url>http://www.shopex.cn</url>
+    </author>
+
+    <version>2.4</version>
+    <license>shopex license</license>
+
+    <depends>
+        <app>base</app>
+    </depends>
+</app>

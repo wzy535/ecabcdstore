@@ -1,0 +1,89 @@
+<div id="msgBar_<{$widgets_id}>" class="my-msg">                              
+    <a href="<{link app=b2c ctl=site_member act=inbox}>" >
+      <span class="mti"></span>您有<span id="msg_num"></span>条未读消息
+    </a>
+  </div>
+<div class="my-order">
+    我的订单<span class="ar"></span>
+</div>
+<a href="<{link app=b2c ctl=site_member act=index}>" class="fl">会员中心</a>
+<span class="dividing fl"></span>
+<a href="#" class="fl">在线客服</a>
+<span class="dividing fl"></span>
+<a href="#" class="fl">帮助中心</a>
+<span class="dividing fl"></span>
+<a href="#" class="fl">网站导航</a>
+<span class="dividing fl"></span>
+<span id="cur_select_<{$widgets_id}>" class="fl cur_select">
+    <span class="cur-name"></span>
+</span>
+<script>
+    var e = Cookie.read('UNAME')?Cookie.read('UNAME'):'';
+    if(e){
+      new Request({
+          url:'<{link app=b2c ctl=site_member act=get_unreadmsg_num}>',
+          method:'post',
+          onComplete:function(e){
+            rs = parseInt(JSON.decode(e).inbox_num);
+            $("msg_num").innerHTML = rs;
+            if(rs > 0){
+              $("msgBar_<{$widgets_id}>").setStyle('display','block');
+            }else{
+              $("msgBar_<{$widgets_id}>").setStyle('display','none');
+            }
+          }
+        }).send();
+    }
+    else{
+        $("msgBar_<{$widgets_id}>").setStyle('display','none');
+    }
+    var coinBar = $('cur_select_<{$widgets_id}>');
+    var barOptions = {
+        MID:Cookie.read('S[MEMBER]')?Cookie.read('S[MEMBER]'):'',
+        coin:<{$data.cur|default:'null'}>,
+        curCoin:Cookie.read('S[CUR]')?Cookie.read('S[CUR]'):'<{$data.def_cur.cur_code}>',
+        cartViewURl:'<{link app=b2c ctl="site_cart" act="view"}>',
+        stick:<{if $setting.stick}>true<{else}>false<{/if}>
+    };
+    if(coinBar){
+        var coinMenu = new Element('div',{'class':'coinmenu fmenu','styles':{'display':'none'}}).inject(coinBar);
+        barOptions.coin.each(function(item){
+            if(item['cur_code']==barOptions['curCoin']){
+                coinBar.getElement('.cur-name').set('text',[item.cur_sign,item.cur_name].join(''));
+            }
+            coinMenu.adopt(new Element('div',{'class':'item',text:[item.cur_sign,item.cur_name].join(''),events:{
+                    click:function(){
+                        Cookie.write('S[CUR]',item.cur_code,{path:"<{$data.base_url}>"});
+                        if(item['cur_code'] != barOptions['curCoin']) {
+                            new Request.JSON({
+                                url:'<{link app=b2c ctl=site_cart act=getCartTotalPrice}>',
+                                data:'currency='+item['cur_code'],
+                                onSuccess:function(rs){
+                                    Cookie.write('S[CART_TOTAL_PRICE]',rs,{path:"/"});
+                                },
+                                onComplete:function(){
+                                    window.location.href=window.location.href;
+                                }
+                            }).send();
+                        }
+                        else{
+                            window.location.href=window.location.href;
+                        }
+                    }
+            }}));
+        });
+        coinBar.addEvents({
+            'mouseenter':function(){
+                coinMenu.setStyles({
+                    display:'block',
+                    visibility:'visible'
+                });
+            },
+            'mouseleave':function(){
+                coinMenu.setStyles({
+                    visibility:'hidden'
+                });
+            }
+        });
+    }
+</script>

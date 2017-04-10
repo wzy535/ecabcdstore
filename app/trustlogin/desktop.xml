@@ -1,0 +1,5 @@
+<desktop>
+    <adminpanel group="desktop_other" permission="other" controller='trustlogin_cfg' action='index' display='true'>
+        信任登录配置
+    </adminpanel>
+</desktop>

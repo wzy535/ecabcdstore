@@ -1,0 +1,12 @@
+<desktop>
+    <permissions>
+        <permission id="preparesell" display='true'>预售</permission>
+    </permissions>
+
+    <workground name="营销" id="b2c.wrokground.sale" controller="admin_sales_order" action="index" order="40">
+        <menugroup name="促销">
+            <menu controller='admin_preparesell' action='index' permission='preparesell' display='true' order='50'>预售</menu>
+        </menugroup>
+    </workground>
+        
+</desktop>

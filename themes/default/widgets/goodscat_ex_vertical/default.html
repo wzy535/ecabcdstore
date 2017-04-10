@@ -1,0 +1,369 @@
+<{*
+<pre class="notice">
+  <{dump var=$setting}>
+</pre>
+  *}>
+
+
+<{if $setting.show_cat_lv2||$setting.show_cat_lv3||$setting.show_cat_sale||$setting.show_cat_brand}>
+   <{assign var=isbox value=1}>
+<{/if}>
+
+
+<div id="cat_ex_vertical_<{$widgets_id}>" >
+  <ul class="cat-ex-vertical">
+  <{foreach from=$data.lv1 key=cat_lv1_key item=cat_lv1 name=cat_lv1_name}>
+    <li class="cat-item lv1 <{if $env.foreach.cat_lv1_name.first}>first<{elseif $env.foreach.cat_lv1_name.last}>last<{/if}>"
+      data-catid="<{$cat_lv1.cat_id}>"
+      data-typeid="<{$cat_lv1.type}>"
+      data-typename="<{$cat_lv1.type_name}>">
+      <div class="cat-root-box">
+        <a href="<{$cat_lv1.url}>" <{if $setting.target_blank}>target="_blank"<{/if}>>
+          <span><{$cat_lv1.cat_name}></span>
+        </a>
+        <{if $setting.redundancy_catlv2}>
+        <div class="cat-lv2-redundancy">
+        </div>
+        <{/if}>
+
+      </div>
+      <{if $isbox}>
+      <div class="cat-children-box">
+        <{if $setting.show_cat_sale||$setting.show_cat_brand}>
+        <div class="cat-link">
+          <{if $setting.show_cat_sale && count($cat_lv1.sales)>0}>
+          <dl class="cat-link-sales">
+            <dt><span><{$setting.sales_title}></span></dt>
+            <dd>
+            <{foreach from=$cat_lv1.sales item=sale name=sales_name}>
+              <div class="cat-link-sale-item" data-endtime="<{$sale.to_time}>">
+                  <{$sale.name}>
+                  <p><{$sale.description}></p>
+              </div>
+            <{/foreach}>
+            </dd>
+          </dl>
+          <{/if}>
+          <{if $setting.show_cat_brand && count($cat_lv1.brand)>0}>
+          <dl class="cat-link-brand">
+            <dt><span><{$setting.brand_title}></span></dt>
+            <dd>
+                        <{foreach from=$cat_lv1.brand item=bid}>
+                        <{assign  var=brand value=$data.brand_list.{$bid} }>
+                        <{if $brand}>
+                        <div class="cat-link-brand-item" >
+                            <a href="<{link app=b2c ctl=site_brand act=index arg0=$bid}>" class="img-link" <{if $setting.target_blank}>target="_blank"<{/if}>>
+                                <img src="<{$brand.brand_logo|storager}>" />
+                            </a>
+                            <a href="<{link app=b2c ctl=site_brand act=index arg0=$bid}>" <{if $setting.target_blank}>target="_blank"<{/if}>>
+                                <span><{$brand.brand_name}></span>
+                            </a>
+                        </div>
+                        <{/if}>
+                        <{/foreach}>
+            </dd>
+          </dl>
+          <{/if}>
+                  </div>
+                  <{/if}>
+      </div>
+        <{if $setting.box_flex}>
+        <div class="cat-children-box-flex">&nbsp;</div>
+        <{/if}>
+            <{/if}>
+    </li>
+  <{/foreach}>
+  </ul>
+
+  <div style="display:none;">
+    <{if $setting.show_cat_lv2}>
+      <{foreach from=$data.lv2 key=cat_lv2_key item=cat_lv2 name=cat_lv2_name}>
+        <dl class="cat-item lv2"
+                  data-catpid="<{$cat_lv2.pid}>"
+                  data-catid="<{$cat_lv2.cat_id}>"
+                  data-typeid="<{$cat_lv2.type}>"
+                  data-typename="<{$cat_lv2.type_name}>">
+          <dt>
+            <a href="<{$cat_lv2.url}>" <{if $setting.target_blank}>target="_blank"<{/if}>><span><{$cat_lv2.cat_name}></span></a>
+          </dt>
+          <{if $setting.show_cat_lv3}>
+          <dd>
+          </dd>
+          <{/if}>
+        </dl>
+      <{/foreach}>
+    <{/if}>
+
+    <{if $setting.show_cat_lv3}>
+      <{foreach from=$data.lv3 key=cat_lv3_key item=cat_lv3 name=cat_lv3_name}>
+                <a href="<{$cat_lv3.url}>" class="cat-item lv3"
+                  data-catpid="<{$cat_lv3.pid}>"
+                  data-catid="<{$cat_lv3.cat_id}>"
+                  data-typeid="<{$cat_lv3.type}>"
+                  data-typename="<{$cat_lv3.type_name}>" <{if $setting.target_blank}>target="_blank"<{/if}>><span><{$cat_lv3.cat_name}></span></a>
+      <{/foreach}>
+    <{/if}>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  addEvent('domready',function(){
+    //var _t = $time();
+
+    var container = $('cat_ex_vertical_<{$widgets_id}>');
+
+    <{if $isbox}>
+    var containerParentNode = container.parentNode;
+          while(containerParentNode!=document.body){
+
+            $(containerParentNode).setStyle('overflow','visible');
+
+
+            containerParentNode = containerParentNode.parentNode;
+          }
+    var containerPos = container.getPosition([window]);
+    var mousEenterTimer = 0,mouseLeaveTimer = 0;
+    <{/if}>
+
+    container.getElements('li.lv1').each(function(item){
+
+      <{if $isbox}>
+      var ccbEl = item.getElement('div.cat-children-box');
+      <{/if}>
+
+      <{if $setting.show_cat_lv2}>
+      var catLv1ID =item.get('data-catid');
+      var dls = container.getElements('dl[data-catpid='+catLv1ID+']');
+      var ccEl  = new Element('div.cat-children').inject(ccbEl,'top').adopt(dls);
+      var dls_length = dls.length;
+      if(dls&&dls_length>1){
+        dls[0].addClass('first');
+        dls[dls_length-1].addClass('last');
+      }
+
+        <{if $setting.redundancy_catlv2}>
+          var tmpInject = [];
+          dls.getElement('a').each(function(a){
+            tmpInject.push(new Element('a',{href:a.get('href'),text:a.get('text')}));
+          });
+          item.getElement('.cat-lv2-redundancy').adopt(tmpInject);
+        <{/if}>
+
+      <{/if}>
+
+                 <{if $isbox}>
+      item.addEvents({
+        'mouseenter':function(){
+          clearTimeout(mousEenterTimer);
+          clearTimeout(this.retrieve('mouseLeaveTimer'));
+          mousEenterTimer =(function(){
+            this.addClass('mouseenter-cat');
+
+            <{if $setting.show_cat_brand}>
+
+                            var imgMaxH = 0;
+              var brandMaxH =  item.retrieve('brandMaxH');
+              var brandItems = item.getElements('.cat-link-brand-item');
+                            var imgBox = item.getElements('.img-link');
+                            var brandImg = item.getElements('img');
+              if(!brandMaxH){
+                brandItems.each(function(brand){
+                  brandMaxH = Math.max(brandMaxH,brand.getSize().y);
+                });
+                                brandImg.each(function(item){
+                                    imgMaxH = Math.max(imgMaxH,item.getSize().y);
+                                });
+              }
+              if(brandItems&&brandItems.length)
+              brandItems.setStyles({height:brandMaxH,overflow:'hidden'});
+              imgBox.setStyles({display:'block',height:imgMaxH,overflow:'hidden'});
+
+
+            <{/if}>
+
+
+            var _pos1 = window.getScrollTop() - containerPos.y;
+            var _pos2 =this.retrieve('_pos2');
+            if(!_pos2)_pos2 =  this.getPosition().y+this.getSize().y;
+            ccbEl.setStyle('top',_pos1>0?_pos1:0);
+            var _pos3 = ccbEl.getPosition().y+ccbEl.getSize().y;
+            var _limit = _pos3 - _pos2;
+            var flexDeviate = 4;
+            if(_limit<0){
+              ccbEl.setStyle('top',ccbEl.getStyle('top').toInt()+Math.abs(_limit));
+              flexDeviate = (-flexDeviate);
+            }
+            <{if $setting.box_flex}>
+            var ccbElCIS = ccbEl.getCoordinates(container);
+                  delete(ccbElCIS['right']);delete(ccbElCIS['bottom']);
+            this.getElement('.cat-children-box-flex').setStyles(Object.append(ccbElCIS,{
+              top:ccbElCIS.top+flexDeviate,
+              left:ccbElCIS.left+(<{if $setting.box_left}>-<{/if}>Math.abs(flexDeviate))
+            }));
+            <{/if}>
+
+
+
+
+          }).delay(200,this);
+        },
+        'mouseleave':function(){
+          clearTimeout(mousEenterTimer);
+          this.store('mouseLeaveTimer',
+            mouseLeaveTimer =  this.removeClass.delay(150,this,['mouseenter-cat'])
+            );
+        }
+      });
+      <{/if}>
+
+    });
+
+    <{if $setting.show_cat_lv3}>
+    container.getElements('.lv2 dd').each(function(item){
+      var catLv2ID = item.getParent('.lv2').get('data-catid');
+      item.adopt(container.getElements('a[data-catpid='+catLv2ID+']'));
+    });
+    <{/if}>
+
+
+
+
+
+    //console.info($time()-_t);
+
+
+  });//end domready
+</script>
+
+
+
+<style type="text/css">
+  .cat-ex-vertical{
+    line-height: 20px; background: rgb(255,249,217);
+    color:#333;
+    width: <{$setting.container_width|default:200}>px;
+    position: relative;
+  }
+
+  .cat-ex-vertical li a,.cat-ex-vertical li span{display: block;}
+
+  .cat-ex-vertical li span{padding: 5px 5px 5px 10px;}
+  .cat-ex-vertical li{
+    font-family: "Microsoft Yahei";
+    font-size: 14px;
+    border-bottom:rgb(231,199,152) 1px solid;
+  }
+  .cat-ex-vertical li.first{border-top: none;}
+  .cat-ex-vertical li.last{border-bottom: none;}
+
+
+  .cat-ex-vertical li .cat-root-box{border:<{$setting.box_border_width}>px rgb(255,249,217) solid;}
+  .cat-ex-vertical li .cat-root-box a{white-space:nowrap;}
+
+  <{if $isbox}>
+  .cat-children-box:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+  }
+  .cat-children-box {display: inline-block;}
+  * html .cat-children-box{display: block;}
+
+  .cat-ex-vertical .cat-children-box{
+    position: absolute;display: none;
+    <{if $setting.box_left}>
+     left:-<{$setting.box_width+$setting.box_border_width}>px;
+    <{else}>
+     left:<{$setting.container_width-$setting.box_border_width}>px;
+    <{/if}>
+    top:0;
+    font-family: Arail;font-size: 12px;
+    width:<{$setting.box_width|default:700}>px;
+    overflow: hidden;
+    line-height: 15px;
+    border:<{$setting.box_border_width}>px solid RGB(217,58,47);
+    z-index: 90;
+    background: #fff;
+  }
+
+  <{if $setting.box_flex}>
+  .cat-ex-vertical .cat-children-box-flex{
+    background: #999;
+    opacity: .4;
+    filter:alpha(opacity=40);
+    z-index: 80;position: absolute;display: none;
+    }
+  <{/if}>
+  .cat-ex-vertical li.mouseenter-cat{background: #fff;}
+  .cat-ex-vertical li.mouseenter-cat .cat-root-box{
+    border-color:RGB(217,58,47);
+    position: relative;z-index: 100;
+    <{if $setting.box_left}>
+    border-left:none;
+    <{else}>
+    border-right:none;
+    <{/if}>
+
+    background: #fff;
+  }
+  .cat-ex-vertical li.mouseenter-cat .cat-children-box,.cat-ex-vertical li.mouseenter-cat .cat-children-box-flex{
+    display: block;
+  }
+
+
+  .cat-ex-vertical .cat-children,.cat-ex-vertical .cat-link{
+    float:<{$setting.box_left|default:'left'}>;
+  }
+
+  .cat-ex-vertical .cat-children dl,.cat-ex-vertical .cat-link dl{
+    padding: 10px;
+  }
+  .cat-ex-vertical .cat-children{
+    <{if $setting.show_cat_sale||$setting.show_cat_brand}>
+    <{assign var=box_cc_width value=100-$setting.box_link_width}>
+    <{else}>
+    <{assign var=box_cc_width value=100}>
+    <{/if}>
+    width: <{$box_cc_width}>%;
+
+  }
+
+  .cat-ex-vertical .cat-link{
+    <{if $setting.show_cat_lv2}>
+      width: <{$setting.box_link_width}>%;
+      background: RGB(255,253,231);
+    <{else}>
+    width: 100%;
+    <{/if}>
+
+  }
+
+  .cat-ex-vertical .cat-children dl{border-bottom: 1px #ccc dotted;clear: both;display: inline-block;width: 100%;}
+  .cat-ex-vertical .cat-children dl.last{border-bottom: none;}
+  .cat-ex-vertical .cat-children dt,.cat-children dt a,.cat-children dt span{float: left; font-weight: bold;}
+  <{if $setting.show_cat_lv3}>
+  .cat-ex-vertical .cat-children dt{width:<{$setting.cat_lv2_width}>%;}
+  .cat-ex-vertical .cat-children dd{display: inline-block;width: <{90-$setting.cat_lv2_width}>%}
+  .cat-ex-vertical .cat-children dd a{float: left;}
+  <{else}>
+  .cat-ex-vertical .cat-children dt{width:auto;}
+  <{/if}>
+  .cat-ex-vertical .cat-link dt{font-size: 14px;font-weight: bold;padding: 5px;}
+  .cat-ex-vertical .cat-link dd{padding: 10px;}
+
+  .cat-ex-vertical .cat-link-sale-item{padding-left: 20px;line-height: 22px;}
+  .cat-ex-vertical .cat-link-sale-item p{color: #666;}
+  .cat-ex-vertical .cat-link-brand-item{float: left;margin-left: 10px;text-align: center;width: <{$setting.brand_logo_maxwidth}>px;}
+  .cat-ex-vertical .cat-link-brand-item img{width: 100%;}
+  <{/if}>
+
+
+  .cat-lv2-redundancy{display: inline-block;overflow: hidden;}
+  .cat-lv2-redundancy a{font-size: 12px;line-height: 18px;float: left;font-weight: normal;font-family: Arail;padding: 3px 3px 3px 10px;}
+
+
+</style>

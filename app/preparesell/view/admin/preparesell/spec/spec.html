@@ -1,0 +1,41 @@
+<h2 class="head-title"><{t}>规格<{/t}></h2>
+<div class="goods-spec-cell" id='goods-spec-product'>
+    <table cellspacing="0" cellpadding="0" border="0" class="gridlist">
+        <thead id="productNodeTitle">
+            <tr>
+                <th><{t}>是否作为预售商品<{/t}></th>
+                <th><{t}>预售库存<{/t}></th>
+                <th orderkey="bn"><{t}>货号<{/t}></th>
+                <th orderkey="product_id"><{t}>规格<{/t}></th>
+                
+                <th orderkey="cost"><{t}>销售价<{/t}></th>
+                <th orderkey="prepareprice"><{t}>预售订金<{/t}></th>
+               <!--  <th orderkey="cost"><{t}>尾款<{/t}></th> -->
+            
+                
+                <th ><{t}>上架<{/t}></th>
+
+            </tr>
+        </thead>
+        <tbody id='productNode'>
+            <{foreach from=$specs item=spec key=specid}>
+              <tr>
+                <td>
+                    <input type="checkbox" name="to_prepare[]" value="<{$spec.product_id}>" <{if $spec.status}> checked=checked <{/if}>/>
+                    <input type="hidden" name="product[<{$spec.product_id}>][product_id]" value="<{$spec.product_id}>" />
+                </td>
+                <td><input type="text" type="text" vtype="unsigned" name="product[<{$spec.product_id}>][initial_num]" size=4 value="<{$spec.initial_num|default:$spec.store}>" > </td>
+                <td orderkey="bn"><input type="text" readonly=true name="product[<{$spec.product_id}>][bn]" value="<{$spec.bn}>"  class="class-bn" /></td>
+                <td orderkey="product_id"><{$spec.spec_info}></td>
+               
+                <td orderkey="price"><{t}><{$spec.price |cur}><{/t}></td>
+              <!--   <td orderkey="prepareprice"><{t}><{$spec.prepare_price |cur}><{/t}></td> --> 
+                 <td orderkey="price"><input type="text" vtype="unsigned" name="product[<{$spec.product_id}>][prepare_price]" size=4 value="<{if $spec.prepare_price}><{$spec.prepare_price}><{else}><{$spec.price}><{/if}>" > </td>  
+               <!--  <td orderkey="endprepareprice"><{t}><{$spec.price-$spec.prepareprice |cur}><{/t}></td> -->
+               
+                <td ><{t}><{if $spec.marketable=='true'}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}><{/t}></td>
+              </tr>
+            <{/foreach}>
+        </tbody>
+    </table>
+</div>

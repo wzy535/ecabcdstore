@@ -1,0 +1,28 @@
+<div class="brands-list clearfix">
+  <{foreach from=$products item=data}>
+  <div class="items">
+    <dl>
+        <dt class="img">
+        <a href="<{link app=starbuy ctl=site_team act=index arg0=$data.product_id}>" title="<{t}>了解<{/t}> <{$data.name}>">
+            <img src="<{$data.image_default_id|storager:'m'}>" alt="<{$data.name}>"></a></dt>
+      <dd class="intro">
+        <a href="<{link app=starbuy ctl=site_team act=index arg0=$data.product_id}>" title="<{t}>了解<{/t}> <{$data.name}>"><{$data.name}> &raquo;</a>
+     </dd>
+    </dl>
+  </div>
+  <{/foreach}>
+
+  <div class="clearfix">
+    <{pagers data=$pager}>
+  </div>
+</div>
+
+<script>
+window.addEvent('load',function(){
+    if(Browser.ie6) {
+        $$('.brands-list .img img').each(function(img){
+            img.zoomImg(150,100);
+        });
+    }
+});
+</script>

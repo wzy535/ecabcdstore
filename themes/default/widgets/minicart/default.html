@@ -1,0 +1,131 @@
+<div id="minicart_<{$widgets_id}>" class="minicart_box minicart" <{if $setting.show_gallery}>show_gallery="true"<{/if}>>
+    <div class="minicart-title">
+    </div>
+    <div class="MiniCarDetail minicart-cont">
+    </div>
+</div>
+<!--<li class="icon2"><span><a href="<{link app=b2c ctl=site_cart act=checkout}>">去结账</a></span></li>-->
+<script>
+    /*-------------
+    *minicart迷你购物车
+    -----------*/
+
+    window.addEvent('domready',function(){
+
+        var cartViewUrl='<{link app=b2c ctl="site_cart" act="view"}>';
+        var MiniCarWidgets={
+            init:function(){
+                var minicart=this.cart= $('minicart_<{$widgets_id}>'),
+                minicart_detail=this.detailbox=minicart.getElement('.MiniCarDetail'),
+                handle=this.handle=minicart.getElement('.minicart-title');
+                this.display().attach();
+            },
+            display:function(){
+                <{if $setting.show_float}>
+                var count=Cookie.read('S[CART_COUNT]')||0,display;
+                display=!count.toInt()?'none':'';
+                if(!!['form-cart','order-create',$$('.member-center')[0]].some(function(el){return $(el)}))display='none';
+                this.cart.setStyle('display',display).setStyle('position','absolute').tween('top',document.body.getScroll().y+100);
+                <{/if}>
+                return this;
+            },
+            attach:function(){
+                this.handle.addEvents({
+                    'mouseenter':function(e){
+                        if((e&&this.state)||(e&&!Cookie.read('S[CART_COUNT]')))return;
+                        if(e&&$(e.target)==this.handle&&this.cart.getElement('.CartInfoItems'))
+                        return this.show();
+
+                        this.request([{url:cartViewUrl, method:'post',
+                            onRequest:function(){
+                                this.detailbox.empty().innerHTML='<div class="loading">加载中...</div>';
+                            }.bind(this)
+                        }]);
+                        this.show();
+                    }.bind(this)
+                });
+                this.cart.addEvent('_show',function(e){
+                    this.handle.fireEvent('mouseenter');
+                }.bind(this));
+                window.addEvent('scroll',this.display.bind(this));
+            },
+            show:function(e){
+                this.detailbox.setStyles({'visibility':'visible'});
+                this.state=true;
+                document.addEvent('click',function(){
+                    this.hide();
+                    document.removeEvent('click',arguments.callee);
+                }.bind(this));
+            },
+            hide:function(){
+                this.state=false;
+                this.detailbox.setStyle('visibility','hidden');
+            },
+            removeCart:function(el){
+                var cartBox=el.getParent('.minicart-single'),self=this,url=cartBox.get('urlremove');
+                if(cartBox.hasClass('havechild')){
+                    var chlid_id= cartBox.get('chlid_id'),group;
+                    if(group=this.detailbox.getElements('.'+chlid_id)){
+                        group.each(function(ell){ell.destroy();});
+                    }
+                }
+                cartBox.destroy();
+                if(!this.detailbox.getElement('.minicart-single')){
+                    this.detailbox.getElement('.CartInfoItems').destroy();
+                }
+                var _detailbox = cartBox;
+                this.request([{url:url,data:_detailbox,onComplete:function(re){
+                        this.detailbox.innerHTML=re;
+                        var h = window.getSize().y - this.detailbox.getPosition(document.body).y + window.getScroll().y - this.detailbox.getPatch().y;
+                        this.display().addEvent();
+                        this.detailbox.setStyle('height', Math.min(h, this.detailbox.getFirst().getSize().y));
+                }.bind(this)}]);
+            },
+            removeCartActionDelete:function(el){
+                var cartBox=el.getParent('.goods-item'),self=this,url=el.get('href');
+                cartBox.destroy();
+                var _detailbox = cartBox;
+                this.request([{url:url,data:_detailbox,onComplete:function(re){
+                        this.detailbox.innerHTML=re;
+                        var h = window.getSize().y - this.detailbox.getPosition(document.body).y + window.getScroll().y - this.detailbox.getPatch().y;
+                        this.display().addEvent();
+                        this.detailbox.setStyle('height', Math.min(h, this.detailbox.getFirst().getSize().y));
+                }.bind(this)}]);
+            },
+            addEvent:function(){
+                var _this=this;
+                this.detailbox.getElements('.delcart').addEvent('click',function(e){
+                    e.stop(); _this.removeCart(this);
+                });
+                this.detailbox.getElements('.action-delete').addEvent('click',function(e){
+                    e.stop(); _this.removeCartActionDelete(this);
+                });
+            },
+            request:function(){
+                var params=Array.flatten(arguments).link({
+                    'remoteURL':Type.isString,
+                    'options':Type.isObject
+                });
+                if(!params.options)return;
+                params.options.data = (params.options.data?params.options.data.toQueryString():'')+'&mini_cart_list=true';
+                if(!params.options.url)return false;
+                params=Object.append({
+                    url:params.remoteURL,
+                    method:'post',
+                    onSuccess:function(re){
+                        this.detailbox.innerHTML=re;
+                        var h = window.getSize().y - this.detailbox.getPosition(document.body).y + window.getScroll().y - this.detailbox.getPatch().y;
+                        this.display().addEvent();
+                        this.detailbox.setStyle('height', Math.min(h, this.detailbox.getFirst().getSize().y));
+                        updateCartInfo();
+                    }.bind(this)
+                },params.options||{});
+                return new Request(params).send();
+            }
+        };
+
+        MiniCarWidgets.init();
+
+
+    });
+</script>

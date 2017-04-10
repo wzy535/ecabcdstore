@@ -1,0 +1,7 @@
+<site>
+	<module id='referrals' controller='site_member' >
+        <name>referrals</name>
+        <title>注册推荐</title>
+        <disable>false</disable>
+    </module>
+</site>

@@ -1,0 +1,14 @@
+    <span class="fl">
+        <{t app='b2c'}>购物车中有<{/t}>
+        <script>
+            var _prefix_number = '<span class="num op-cart-number">';
+            var _subfix_number = "</span>";
+            <{if $setting.cart_show_type==1}>
+            document.write(typeof(Cookie)=='undefined' ? (_prefix_number + '0' + _subfix_number) : _prefix_number + (Cookie.read('S[CART_NUMBER]')?Cookie.read('S[CART_NUMBER]'):'0') + _subfix_number);
+            <{else}>
+            document.write(typeof(Cookie)=='undefined' ? (_prefix_number + '0' + _subfix_number):  _prefix_number + (Cookie.read('S[CART_COUNT]')?Cookie.read('S[CART_COUNT]'):'0') + _subfix_number);
+            <{/if}>
+        </script>
+        <{if $setting.cart_show_type==1}><{t app='b2c'}>件<{/t}><{else}><{t app='b2c'}>种<{/t}><{/if}><{t app='b2c'}>商品<{/t}>
+    </span>
+<a href="<{link app=b2c ctl="site_cart" act="index"}>" class="checkout"><{t app='b2c'}>去结算<{/t}></a>

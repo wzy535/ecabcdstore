@@ -1,0 +1,69 @@
+<header>
+	<div class="a-bar">
+		<a href="javascript:history.back()" class="a-back">
+           	<i class="arr left"></i>
+            返回
+		</a>
+		<div class="a-name">
+			售后申请详情
+		</div>
+	</div>
+</header>
+<div class="full-screen">
+	<div class="m-after rec-after">
+		<div class="section s-after ">
+			<p class="s-head">售后状态:<{switch from=$order.status}>
+                                    <{case value=1}><{t}>申请中<{/t}>
+                                    <{case value=2}><{t}>审核中<{/t}>
+                                    <{case value=3}><{t}>审核通过<{/t}>
+                                    <{case value=4}><{t}>完成<{/t}>
+                                    <{case value=5}><{t}>审核未通过<{/t}>
+                                <{/switch}></p>
+
+			<ul class="rec-list">
+
+				<{foreach from=$order.comment item="rec" name=rec }>
+				<li class="list-info">
+					<div class="info-wrap">
+						<p class="rec-time"> <{$rec.time|cdate:FDATE_STIME}></p>
+						<p class="rec-cont"><{$rec.content}></p>
+					</div>
+				</li>
+				<{/foreach}>
+
+			</ul>
+		</div>
+		<div class="section s-after">
+			<p class="s-head">售后主题</p>
+			<p class="rec-info"><{$order.title}></p>
+			<textarea name="" id="" cols="30" rows="10" disabled="disabled" readonly="readonly"><{$order.content}></textarea>
+		</div>
+
+		<div class="section s-after ">
+			<p class="s-head">售后申请商品详情</p>
+			<ul class="after-list">
+
+
+
+				<{foreach from=$order.product_data item="goods" name=goods }>
+				<li class="after-item">
+					<div class="g-line">
+						<div class="gline-img">
+							<a href="<{$goods.link_url}>">
+								<img src="<{$goods.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager:'s'}>" alt="">
+							</a>
+						</div>
+						<div class="gline-info">
+							<p class="gname"><{$goods.name}></p>
+							<p class="gnumber"></p>
+							<div class="g-num">x<{$goods.num}></div>
+						</div>
+					</div>
+				</li>
+				<{/foreach}>
+
+
+			</ul>
+		</div>
+	</div>
+</div>

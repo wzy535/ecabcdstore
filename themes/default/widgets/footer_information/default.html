@@ -1,0 +1,12 @@
+<dl class="content-list">
+    <{if $data.__shownode&&$data.node_name}>
+    <dt class="content-title">
+    <{if !$data.__stripparenturl}>
+    <a class="link" href="<{$data.node_url}>"><{$data.node_name}></a>
+    <{else}>
+    <{$data.node_name}>
+    <{/if}>
+    </dt>
+    <{/if}>
+    <{$data.__html}>
+</dl>

@@ -1,0 +1,14 @@
+<{if $data.__shownode&&$data.node_name}>
+<div class="gray-title">
+    <{if !$data.__stripparenturl}>
+    <a href="<{$data.node_url}>" ><span><{$data.node_name}></span></a>
+    <{else}>
+    <{$data.node_name}>
+    <{/if}>
+</div> 
+<{/if}>
+<div class="gray-content">
+    <ul class="news-list">
+        <{$data.__html}>
+    </ul>
+</div>

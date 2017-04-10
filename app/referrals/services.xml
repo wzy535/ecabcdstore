@@ -1,0 +1,9 @@
+<services>
+    <service id="referrals.member_policy">
+        <class>referrals_member_policy</class>
+    </service>
+
+	<service id="b2c.member_menu_extends">
+		<class>referrals_member_menuextends</class>
+	</service>
+</services>

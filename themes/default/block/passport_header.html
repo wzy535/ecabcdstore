@@ -1,0 +1,35 @@
+<div class="header">
+    <div class="topbar">
+        <div class="small-page">
+            <div class="login-bar">
+                <{widgets id="login_bar"}>
+            </div>
+            <div class="member-link">
+                <{widgets id="member_link"}>
+            </div>
+        </div>
+    </div>
+    <div class="header-main">
+        <div class="small-page">
+            <div class="logo">
+                <{widgets id="logo"}>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function(){
+            addEvent('domready',function(){
+                function resize(){
+                    var b = $$('body')[0];
+                    if($(window).getWidth() < 1225){
+                        b.addClass('min-page');
+                    }else{
+                        b.removeClass('min-page');
+                    }
+                }
+                addEvent('resize',resize);
+                resize();
+            });
+        })();
+    </script>
+</div>

@@ -1,0 +1,66 @@
+<h5>
+  <div class="tableform">
+    <table border="0" cellpadding="0" style="margin-top:10px" cellspacing="0" >
+      <{if in_array('refer_id', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>首次来源ID：<{/t}>
+        </th>
+        <td>
+          <{$params.refer_id}>&nbsp;<br />
+        </td>
+      </tr>
+      <{/if}>
+      <{if in_array('refer_time', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>首次来源时间：<{/t}>
+        </th>
+        <td>
+          <{t}><{$params.refer_time|cdate:FDATE}><{/t}>&nbsp;<br />
+        </td>
+      </tr>
+      <{/if}>
+      <{if in_array('refer_url', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>首次来源网址：<{/t}>
+        </th>
+        <td>
+          <a target="_blank" href="<{$params.refer_url}>"><{$params.refer_url}></a>&nbsp;<br />
+        </td>
+      </tr>
+      <{/if}>
+      <{if in_array('c_refer_id', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>来源ID：<{/t}>
+        </th>
+        <td>
+          <{$params.c_refer_id}>&nbsp;<br />
+        </td>
+      </tr>
+      <{/if}>
+      <{if in_array('c_refer_url', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>来源网址：<{/t}>
+        </th>
+        <td>
+          <a target="_blank" href="<{$params.c_refer_url}>"><{$params.c_refer_url}></a>&nbsp;<br />
+        </td>
+      </tr>
+      <{/if}>
+      <{if in_array('c_refer_time', $show)}>
+      <tr>
+        <th>
+          <{$name}><{t}>来源时间：<{/t}>
+        </th>
+        <td>
+          <{$params.c_refer_time|cdate:FDATE}>
+        </td>
+      </tr>
+      <{/if}>
+    </table>
+  </div>
+</h5>

@@ -1,0 +1,32 @@
+<cronentries>
+  <cron id="b2c_tasks_cleancartobject">
+    <description>清除用户购物车数据</description>
+    <schedule>0 2 1 * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+  <cron id="b2c_tasks_order_cancel">
+    <description>自动取消营销过期订单</description>
+    <schedule>5 * * * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+  <cron id="b2c_tasks_order_cancel_unpay">
+    <description>取消过期普通订单</description>
+    <schedule>50 * * * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+  <cron id="b2c_tasks_order_delivery">
+    <description>自动确认收货</description>s
+    <schedule>5 * * * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+<!--   <cron id="b2c_tasks_archive">
+  <description>归档订单相关单据</description>
+  <schedule>*/5 * * * *</schedule>
+  <enabled>true</enabled>
+</cron>
+<cron id="b2c_tasks_order_finish">
+  <description>每天完成符合条件的订单</description>
+  <schedule>0 5 * * *</schedule>
+  <enabled>true</enabled>
+</cron> -->
+</cronentries>

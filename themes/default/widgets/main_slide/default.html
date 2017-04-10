@@ -1,0 +1,45 @@
+<div class="main-slide" id="main_slide">
+    <ul class="slide-list">
+        <{foreach from=$data.pic item=parent key=parentId}>
+        <li class="slide-item">
+        <a href="<{$parent.linktarget}>">
+            <img src="<{$parent.link}>" title="<{$data.linkinfo}>"/>
+        </a>
+        </li>
+        <{/foreach}>
+    </ul>
+    <ul class="slide-triggers">
+        <{assign var=countnum value="1"}>
+        <{foreach from=$data.pic item=parent key=parentId}>
+        <li class="trigger-item"><{$countnum++}></li> 
+        <{/foreach}> 
+    </ul>
+    <div class="triggers-bg"></div>
+</div>
+<script type="text/javascript">
+(function(){
+    addEvent('domready',function(){
+        function newSwitchable (){
+            new Switchable('main_slide',{
+                haslrbtn:false,
+                effect:'<{$setting.effectWay}>',
+                panels:'.slide-item',
+                triggers:'.trigger-item',
+                autoplay:<{$setting.autoplay}>
+            });
+        }
+        newSwitchable();
+        var sizeNow = ($(window).getWidth() < 1225);
+        addEvent('resize',function(){
+            if(sizeNow !== ($(window).getWidth() < 1225)){
+                $$('#main_slide .active').removeClass('active');
+                $('main_slide').set('style','');
+                $$('#main_slide .slide-list').set('style','');
+                $('main_slide').set('html',$('main_slide').get('html'));
+                newSwitchable();
+                sizeNow = !sizeNow;
+            }
+        });
+     });
+}());
+</script>

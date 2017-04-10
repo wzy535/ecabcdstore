@@ -1,0 +1,13 @@
+<desktop>
+
+    <permissions>
+        <permission id="expire" display='true' workground='expire.wrokground.product'>临期管理</permission>
+    </permissions>
+
+    <workground name="临期信息" id="expire.wrokground.product" app="expire" controller="admin_product" action="index" order="1">
+        <menugroup name="产品信息">
+            <menu controller='admin_product' action='index' permission='theme' display='true' order="5">产品</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

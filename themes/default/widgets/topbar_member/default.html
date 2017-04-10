@@ -1,0 +1,58 @@
+<span id="loginBar_<{$widgets_id}>" style="" class="fl">
+    <span class="fl">
+        <{foreach from=$data.login_content item=login}>
+        <{$login}>
+        <{/foreach}>
+        <{$setting.welcome}>
+    </span>
+    <a href="<{link app=b2c ctl=site_passport act=login}>" class="fl"><{t app='b2c'}>登录<{/t}></a>
+    <span class="dividing fl"></span>
+    <a href="<{link app=b2c ctl=site_passport act=signup}>" class="fl"><{t app='b2c'}>注册<{/t}></a>
+</span>
+
+<span id="memberBar_<{$widgets_id}>" style="display:none" class="fl">
+    <span class="fl">
+        <{t app='b2c'}>您好<{/t}><span id="uname_<{$widgets_id}>"></span>！
+    </span>
+    <a href="<{link app=b2c ctl=site_passport act=logout}>" class="fl"><{t app='b2c'}>退出<{/t}></a>
+</span>
+<{if $data.open_id_open=='true' && !$env.cookie.MEMBER}>
+<script>
+    (function(){
+        var loginBtn=$('loginBar_<{$widgets_id}>').getElements('.trust__login'),timer;
+        $$(loginBtn,$('accountlogin')).addEvents({'mouseenter':function(){
+                if(timer)clearTimeout(timer);
+                $('accountlogin').setStyles({'display':'block','top':'20','left':'10'});
+                },'mouseleave':function(){
+                timer=function(){$('accountlogin').setStyle('display','none')}.delay(200);
+            }
+        });
+        $('accountlogin').addEvent('click',function(e){loginBtn.fireEvent('click');})
+    })();
+</script>
+<{/if}>
+<script>
+    var e = Cookie.read('UNAME')?Cookie.read('UNAME'):'';
+    /*
+    new Request({
+        url:'<{link app=b2c ctl=site_passport act=getuname}>',
+        method:'post',
+        onComplete:function(e){
+            */
+            if(e){
+                $("uname_<{$widgets_id}>").innerHTML = e;
+                $("memberBar_<{$widgets_id}>").setStyle('display','block');
+                if($("loginBar_<{$widgets_id}>"))
+                $("loginBar_<{$widgets_id}>").setStyle('display','none');
+            }
+            else{
+                $("loginBar_<{$widgets_id}>").setStyle('display','block');
+                if($("memberBar_<{$widgets_id}>"))
+                $("memberBar_<{$widgets_id}>").setStyle('display','none');
+            }
+            /*
+        },
+        data:''
+    }).send();
+    */
+</script>

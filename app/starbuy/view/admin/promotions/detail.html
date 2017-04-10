@@ -1,0 +1,39 @@
+<div class="tableform">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+    <col style="width:20%"></col>
+    <col style="width:10%"></col>
+    <col class="Colgoodsid"></col>
+    <col class="Colgoodsid"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <thead>
+        <th><{t}>商品名称<{/t}></th>
+        <th><{t}>货品编号<{/t}></th>
+        <th><{t}><{$type_name}>价格<{/t}></th>
+        <th><{t}>市场价格<{/t}></th>
+        <th><{t}>发布时间<{/t}></th>
+        <th><{t}>开始时间<{/t}></th>
+        <th><{t}>结束时间<{/t}></th>
+    </thead>
+    <tbody>
+        <{foreach from=$special_goods item=product}>
+        <td><{$product.name}></td>
+        <td><{$product.bn}></td>
+        <td class="textleft">
+        <{$product.promotion_price|cur}>
+        </td>
+        <td class="textleft">
+        <{$product.mktprice|cur}>
+        </td>
+
+        <td class="textleft">
+        <{$product.release_time|cdate:FDATE_STIME}>&nbsp;
+        </td>
+        <td><{$product.begin_time|cdate:FDATE_STIME}></td>
+        <td><{$product.end_time|cdate:FDATE_STIME}></td>
+        </tr>
+        <{/foreach}>
+    </tbody>
+    </table>
+</div>

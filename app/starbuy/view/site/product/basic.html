@@ -1,0 +1,29 @@
+<{if $setting.buytarget == '2'}>
+<{assign var='buytarget' value='target="_blank_cart"'}>
+<{elseif $setting.buytarget == '3'}>
+<{assign var='buytarget' value='target="_dialog_minicart"'}>
+<{/if}>
+<form action="<{link app=b2c ctl=site_cart act=add arg0=goods}>" method="post" <{$buytarget}>>
+  <input type="hidden" name="btype">
+  <input type="hidden" name="goods[goods_id]" value="<{$goodsdata.goods_id}>">
+  <input type="hidden" name="goods[product_id]" value="<{$goodsdata.product_id}>">
+  <div class="product-side">
+    <{include file='site/product/info/pic.html'}>
+  </div>
+  <div class="product-main clearfix">
+    <!-- 标题简介 -->
+    <div class="product-titles">
+      <h2><{$goodsdata.name}></h2>
+      <{if $page_product_basic.brief}><p><{$page_product_basic.brief}></p><{/if}>
+    </div>
+    <dl class="groupbuy-rules">
+      <dt>活动规则：</dt>
+    <dd><{$goodsdata.description}></dd>
+    </dl>
+    <!-- 商品基本信息 -->
+    <div id="product_information" class="product-information">
+      <!--商品价格-->
+      <{include file='site/product/info/specialprice.html'}>
+    </div>
+  </div>
+</form>

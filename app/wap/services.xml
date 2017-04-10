@@ -1,0 +1,44 @@
+<services>
+
+
+    <service id="view_helper">
+        <class>wap_view_helper</class>
+    </service>
+
+    <service id="view_compile_helper">
+        <class>wap_view_compiler</class>
+    </service>
+
+    <service id="desktop_finder.wap_mdl_themes">
+        <class>wap_finder_theme</class>
+    </service>
+
+    <service id="wap_theme_content_detector">
+        <class>wap_application_themewidgets</class>
+    </service>
+
+    <service id="app_content_detector">
+        <class>wap_application_explorer</class>
+        <class>wap_application_module</class>
+    </service>
+
+    <service id="ectools_payment.ectools_mdl_payment_cfgs" optname="支付插件列表">
+        <class>wap_payment_plugin_malipay</class>
+        <class>wap_payment_plugin_mtenpay</class>
+        <class>wap_payment_plugin_wapupacp</class>
+        <class>wap_payment_plugin_lakalachuwap</class>
+        <class>wap_payment_plugin_lakalacrowap</class>
+        <class>wap_payment_plugin_malipaynew</class>
+    </service>
+
+    <service id="trustlogin_trustlogin.wap_trustlogin_cfg" optname="登陆插件列表">
+        <class>wap_trustlogin_qq</class>
+        <class>wap_trustlogin_weibo</class>
+        <class>wap_trustlogin_renren</class>
+        <class>wap_trustlogin_kaixin</class>
+        <class>wap_trustlogin_taobao</class>
+        <!-- <class>wap_trustlogin_sohu</class> -->
+       <!--  <class>wap_trustlogin_baidu</class>
+        <class>wap_trustlogin_weixin</class> -->
+    </service>
+</services>

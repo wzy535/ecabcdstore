@@ -1,0 +1,36 @@
+<div class="c-content" style="margin-top:2rem;">
+	<p style="width:100%; font-size:1.5rem;text-align:center;"><{$msg}></p>
+	<a href="<{$url}>?backurl=" style="font-size:.7rem; text-decoration:underline;color:#0690cf;display:block; width:100%;text-align:center;">如当前页面无调转，请点击此处</a>
+</div>
+<script> 
+     var interval;
+	 $(function () {
+		interval = setTimeout(
+			function(){
+				window.location.href="<{$url}>";
+			}
+		,"1500"); 
+	 });
+/*	 
+	$.ajax({ 
+		url:'', 
+		type:'post', //数据发送方式 
+		dataType:'json', //接受数据格式 (这里有很多,常用的有html,xml,js,json) 
+		data: {'tctype': $(this).attr('data-submit')}
+		success: function(rs){
+			$(".contents").find('p').html("申请失败")
+		}, 
+		success: function(msg){ //成功 
+			$(".contents").find('p').html("申请成功")
+		} 
+	});
+ 		success:function (r) {
+                    if ( r.status == 'error' ){
+                        alert(msg[r.msgno]);
+                    } else if (r.status == 'success') {
+                        alert(msg[r.msgno]);
+                        window.location.href="";
+                    }
+           },
+           */
+</script>

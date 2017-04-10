@@ -1,0 +1,67 @@
+<{if !$_is_singlepage}>
+<form method="POST" action="index.php?app=referrals&ctl=admin_register_rule&act=save" class="tableform" id="form_register_rule">
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+
+
+      <tr>
+        <th><{t}>会员中心是否显示：<{/t}></th>
+        <td><label><input type='radio' name='rule[status]' value="1" <{if $rule.status eq 1}>checked="checked"<{/if}>/><{t}>显示<{/t}></label>
+            <label><input type='radio' name='rule[status]' value="0" <{if $rule.status eq 0}>checked="checked"<{/if}>/><{t}>不显示<{/t}></label></td>
+      </tr>
+     <{if $is_bind_crm}>
+      <tr>
+         <th>推荐成功送积分：<{$rule.register_point}> </th>
+         <td>&nbsp&nbsp (当绑定crm版本不低于2.2.8时，该推荐所送的积分由crm控制
+)</td>
+      </tr>
+      <{else}>
+      <tr>
+         <th><em class="red">*</em><{t}>推荐成功送积分：<{/t}></th>
+         <td><{input type="digits" value=$rule.register_point name="rule[register_point]" maxlength="5" size="5"  required="true" vtype='digits' }></td>
+      </tr>
+      <{/if}>
+
+</table>
+</div>
+</form>
+ <div class="table-action">
+  <{button type="button" label=$___referrals="保存"|t:'referrals' id="register_rule-form-submit"}>
+</div>
+
+
+<script>
+(function(){
+  var _form = $('form_register_rule');
+  var btn =$('register_rule-form-submit');
+  var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+  _form.store('target',{
+    onSuccess:function(response){
+      var hash_res_obj = JSON.decode(response);
+
+      if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+      {
+        try{
+          var _dialogIns = btn.getParent('.dialog').retrieve('instance');
+        }catch(e){}
+
+        if(_dialogIns)
+        {
+          _dialogIns.close();
+          window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+        }
+      }
+
+    }
+  });
+
+      btn.addEvent('click',function(){
+        _form.fireEvent('submit',{stop:$empty});
+    });
+
+})();
+
+
+</script>
+<{/if}>

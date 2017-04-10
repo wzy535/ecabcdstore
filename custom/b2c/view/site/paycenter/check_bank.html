@@ -1,0 +1,36 @@
+<{css src="theme.css"}>
+<div class="payment-bank">
+  <div class="common-mod main-mod auto-bind-widget" data-widget-type="Tabs" data-widget-config="{eventType:'click'}">
+    <ul class="switchable-triggerBox clearfix">
+      <{foreach from=$support_bank key=bank_type_key item=bank_type_value }>
+      <{if $bank_type_key=='credit'}>
+      <li class="switchable-trigger "><em>信用卡</em></li>
+      <{elseif $bank_type_key=='debit'}>
+      <li class="switchable-trigger"><em>借记卡</em></li>
+      <{elseif $bank_type_key=='btb'}>
+      <li class="switchable-trigger "><em>企业账户</em></li>
+      <{elseif $bank_type_key=='mix'}>
+      <li class="switchable-trigger "><em>混合渠道</em></li>
+      <{/if}>
+      <{/foreach}>
+    </ul>
+    <{foreach from=$support_bank key=bank_type_key item=bank_type_value }>
+    <div class="switchable-panel" style="display: none" id="bank_tab">
+      <ul class="payment-bank-list clearfix" >
+        <{foreach from=$bank_type_value key=support_bank_key item=support_bank_value }>
+        <li>
+          <label>
+            <input type="radio" id="bank_item" name="check_bank" value="<{$support_bank_value.bank_key}>">
+            <img width="191" height="36" src="<{$bankimg}><{$support_bank_value.bank_pic}>" alt="<{$support_bank_value.bank_name}>">
+          </label>
+        </li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <{/foreach}>
+  </div>
+</div>
+<script>
+$('bank_tab').set('style','display: block');
+$('bank_item').set('checked','checked');
+</script>

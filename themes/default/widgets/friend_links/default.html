@@ -1,0 +1,26 @@
+<div class="friend-link-inner">
+    <table>
+        <tr>
+            <td class="friend-title">
+                友情链接
+            </td>
+            <td>
+                <ul class="link-list">
+                    <{foreach from=$data item=row}>
+                    <{if $setting.selector == 'text'}>
+                    <li class="link-item">
+                    <a href="<{$row.href}>" class="text-name"><{$row.link_name}></a>
+                    </li>
+                    <{else}>
+                    <li class="link-item">
+                    <a href="<{$row.href}>" class="img-name">
+                        <img src="<{$row.image_url|storager}>" alt="<{$row.link_name}>" />
+                    </a>
+                    </li>
+                    <{/if}>
+                    <{/foreach}>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>

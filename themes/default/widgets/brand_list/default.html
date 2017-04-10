@@ -1,0 +1,22 @@
+
+<div class="blue-box hot-brand">
+    <div class="blue-title">
+        热卖品牌
+        <a href="<{link app=b2c ctl=site_brand act=showlist}>" class="more">更多</a>
+    </div>
+    <div class="blue-content">
+        <ul class="brand-list">
+            <{foreach from=$data item=item key=key name="branditem"}>
+            <li class="brand-item
+            <{if $env.foreach.branditem.iteration%2 == 0}> last<{/if}>
+            <{if $env.foreach.branditem.iteration == 5}> rowlast<{/if}>
+            <{if $env.foreach.branditem.iteration == 6}> rowlast<{/if}>
+            ">
+            <a href="<{link app=b2c ctl=site_brand act=index arg0=$item.brand_id}>" title="<{$item.brand_name}>">
+                <img src="<{$item.brand_logo|storager}>" alt="<{$item.brand_name}>" class="img"/>
+            </a>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>

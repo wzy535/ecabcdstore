@@ -1,0 +1,20 @@
+<div class="title-banner" id="group_slider_<{$widgets_id}>">
+    <h2 class="title"><{$data.ad_pic_title}></h2>
+    <div class="auto-bind-widget" data-widget-type="Switchable" data-widget-config="{effect:'scrollx'}">
+        <ul class="switchable-content">
+            <{foreach from=$data.pic item=parent key=parentId}>
+            <li class="slide-item">
+            <a href="<{$parent.linktarget}>">
+                <img src="<{$parent.link}>" width="<{$data.ad_pic_width}>" height="<{$data.ad_pic_height}>" title="<{$data.linkinfo}>"/>
+            </a>
+            </li>
+            <{/foreach}>
+        </ul>
+        <div class="switchable-triggerBox">
+            <{foreach from=$data.pic item=parent}>
+            <a href="javascript:void(0);">●</a>
+            <{/foreach}>
+        </div>
+    </div>
+</div>
+

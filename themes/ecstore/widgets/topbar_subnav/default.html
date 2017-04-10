@@ -1,0 +1,44 @@
+<div class="subnav">
+  <div id="msgBar_<{$widgets_id}>" class="my-msg">                                                                  
+    <a href="<{link app=b2c ctl=site_member act=inbox}>" class="fl">
+      <span class="mti"></span>您有<span id="msg_num"></span>条未读消息
+    </a>
+  </div>
+  <a href="<{link app=b2c ctl=site_member act=index}>">会员中心</a>
+  <a href="">在线客服</a>
+  <a href="">帮助中心</a>
+  <a href="">网站导航</a>
+</div>
+
+<script>
+    var e = Cookie.read('UNAME')?Cookie.read('UNAME'):'';
+    /*
+    new Request({
+        url:'<{link app=b2c ctl=site_passport act=getuname}>',
+        method:'post',
+        onComplete:function(e){
+            */
+            if(e){
+                new Request({
+                  url:'<{link app=b2c ctl=site_member act=get_unreadmsg_num}>',
+                  method:'post',
+                  onComplete:function(e){
+                    rs = parseInt(JSON.decode(e).inbox_num);
+                    $("msg_num").innerHTML = rs;
+                    if(rs > 0){
+                      $("msgBar_<{$widgets_id}>").setStyle('display','block');
+                    }else{
+                      $("msgBar_<{$widgets_id}>").setStyle('display','none');
+                    }
+                  }
+                }).send();
+            }
+            else{
+                $("msgBar_<{$widgets_id}>").setStyle('display','none');
+            }
+            /*
+        },
+        data:''
+    }).send();
+    */
+</script>

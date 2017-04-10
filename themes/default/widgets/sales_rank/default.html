@@ -1,0 +1,23 @@
+<div class="gray-box sales-rank m">
+    <div class="gray-title"><{$setting.block_name}></div>
+    <div class="gray-content">
+        <ul class="product-list">
+            <{foreach from=$data.goodsRows item=row key=gid name=goodsrow}>
+            <li class="product-item<{if $env.foreach.goodsrow.iteration%5 == 0}> last<{/if}>">
+	        <{assign var=pickey  value=$setting.gpic_size|default:'goodsPicS' }>
+            <a href="<{$row.goodsLink}>" class="product-img">
+                <img src="<{$row[$pickey]}>" alt="<{$row.goodsName}>" class="img"/>
+            </a>
+            <div class="product-info">
+                <div class="product-name">
+                    <a href="<{$row.goodsLink}>">
+                        <{$row.goodsName}>
+                    </a>
+                </div>
+                <div class="product-price">销售价：<{$row.goodsSalePrice|cur}></div>
+            </div>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>

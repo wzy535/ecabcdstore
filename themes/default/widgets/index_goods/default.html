@@ -1,0 +1,49 @@
+<div class="index-product <{$setting.block_class}>">
+    <div class="index-title">
+        <{$setting.block_name}>
+        <{if $setting.morelink}>
+        <div class="more-link">
+            <{foreach from=$setting.morelink item=item key=key}>
+            <a href="<{$item.v}>" class="link"><{$item.k}></a>
+            <{/foreach}>
+        </div>
+        <{/if}>
+    </div>
+    <div class="index-content">
+        <div class="adbar">
+            <div class="ad-first">
+                <a href="<{$setting.big_pic_link}>" title="<{$setting.big_pic_txt}>">
+                    <img src="<{$setting.big_pic}>" alt="<{$setting.big_pic_txt}>" />
+                </a>
+            </div>
+            <div class="ad-second">
+                <a href="<{$setting.small_pic1_link}>" title="<{$setting.small_pic1_txt}>">
+                    <img src="<{$setting.small_pic1}>" alt="<{$setting.small_pic1_txt}>" />
+                </a>
+            </div>
+            <div class="ad-third">
+                <a href="<{$setting.small_pic2_link}>" title="<{$setting.small_pic2_txt}>">
+                    <img src="<{$setting.small_pic2}>" alt="<{$setting.small_pic2_txt}>" />
+                </a>
+            </div>
+        </div>
+        <ul class="product-list">
+            <{foreach from=$data.goodsRows item=row key=gid name=goodsrow}>
+            <li class="product-item<{if $env.foreach.goodsrow.iteration%4 == 0}> last<{/if}>">
+	        <{assign var=pickey  value=$setting.gpic_size|default:'goodsPicS' }>
+            <a href="<{$row.goodsLink}>" class="product-img">
+                <img src="<{$row[$pickey]}>" alt="<{$row.goodsName}>" />
+            </a>
+            <a href="<{$row.goodsLink}>" class="product-name" title="<{$row.goodsName}>">
+                <{$row.goodsName}>
+            </a>
+            <div class="product-price">
+                <div class="selling-price">
+                    抢购价：<span class="price"><{$row.goodsSalePrice|cur}></span>
+                </div>
+            </div>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>

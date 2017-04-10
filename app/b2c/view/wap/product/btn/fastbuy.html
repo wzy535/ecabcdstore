@@ -1,0 +1,43 @@
+
+<{if $setting.isfastbuy == 'true' && $product_store.store>0 && $page_product_basic.promotion_type != 'prepare'}>
+<a href="#" class="btn red" id="J_fast_buy">
+    立即购买
+</a>
+<{/if}>
+
+<!--判断是否是预售商品和预售商品的时间判断-->
+<{if $setting.isfastbuy == 'true' && 
+$page_product_basic.promotion_type == 'prepare' &&
+$page_product_basic.prepare.nowtime >= $page_product_basic.prepare.begin_time &&
+$page_product_basic.prepare.nowtime <= $page_product_basic.prepare.end_time &&
+$page_product_basic.prepare.status == 'true' && $page_product_basic.prepare.initial_num>0
+}>
+<a href="#" class="btn red" id="J_fast_buy">
+    提交订单
+</a>
+<{elseif $page_product_basic.promotion_type == 'prepare' && $page_product_basic.prepare.nowtime>=$page_product_basic.prepare.begin_time_final&& $page_product_basic.prepare.nowtime <= $page_product_basic.prepare.end_time_final && $page_product_basic.prepare.status == 'true'}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">支付尾款时间开始，请到会员中心支付尾款</span></h3>
+
+
+<{elseif $setting.isfastbuy == 'true' && 
+$page_product_basic.promotion_type == 'prepare' &&
+$page_product_basic.prepare.nowtime >= $page_product_basic.prepare.begin_time &&
+$page_product_basic.prepare.nowtime <= $page_product_basic.prepare.end_time &&
+$page_product_basic.prepare.status == 'true' && $page_product_basic.prepare.initial_num==0}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">预售商品已售罄，已支付订金的会员请等待支付尾款.</span></h3>
+
+<{elseif $setting.isfastbuy == 'true' && $page_product_basic.promotion_type == 'prepare' && $page_product_basic.prepare.nowtime>=$page_product_basic.prepare.end_time&& $page_product_basic.prepare.nowtime <= $page_product_basic.prepare.begin_time_final && $page_product_basic.prepare.status == 'true'}>
+<span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">支付订金时间已结束，支付尾款时间未开始，敬请等待！</span>
+
+<{elseif $setting.isfastbuy == 'true' && $page_product_basic.promotion_type == 'prepare' && $page_product_basic.prepare.nowtime>=$page_product_basic.prepare.begin_time_final&& $page_product_basic.prepare.nowtime <= $page_product_basic.prepare.end_time_final && $page_product_basic.prepare.status == 'true'}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">支付尾款时间开始，请到会员中心支付尾款</span></h3>
+
+<{elseif $setting.isfastbuy == 'true' && $page_product_basic.promotion_type == 'prepare' && $page_product_basic.prepare.nowtime<=$page_product_basic.prepare.begin_time && $page_product_basic.prepare.status == 'true'}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">预售活动还没有开始,敬请等待开始！</span></h3>
+
+<{elseif $setting.isfastbuy == 'true' && $page_product_basic.promotion_type == 'prepare'  && $page_product_basic.prepare.status == 'false'}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">预售活动还没有开启,敬请等待开始！</span></h3>
+
+<{elseif $setting.isfastbuy == 'true' && $page_product_basic.promotion_type == 'prepare' && $page_product_basic.prepare.nowtime>=$page_product_basic.prepare.end_time_final && $page_product_basic.prepare.status == 'true'}>
+<h3><span style="font-size:20px;padding-bottom:15px;color:#999;display:block;">预售活动结束</span></h3>
+<{/if}>

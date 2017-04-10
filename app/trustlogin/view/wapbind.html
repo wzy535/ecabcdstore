@@ -1,0 +1,230 @@
+<div class="full-screen">
+    <header>
+    <div class="a-bar">
+        <div class="a-name">
+            绑定现有用户
+        </div>
+    </div>
+    </header>
+    <div class="full-padding">
+      <div>hi~<span>&nbsp;&nbsp;<{$realname}></span><span>&nbsp;&nbsp;<img src="<{$avatar}>" class="handle-show"/></span>&nbsp;&nbsp;</div>
+
+      <form action="<{link app=trustlogin ctl=trustlogin_trustwap act=check_login}>" method="post">
+        <div class="trust-login-tips" style="margin-top:20px;text-align:center;">绑定账号（绑定后可使用现有账号登录）,或者
+          <input  type="hidden" name="data"  value="<{$data.data}>">
+          <input  type="hidden" name="type"  value="<{$data.type}>">
+          <input  type="hidden" name="skip"  value="jump">
+          <input  type="hidden" name="module"  value="<{$data.module}>">
+          <input  type="hidden" name="redirect"  value="<{$data.redirect}>">
+          <button type="submit" rel="_request"><span><span class="f-red">点此跳过</span></span></button>
+        </div>
+      </form/>
+
+        <form action="<{link app=trustlogin ctl=trustlogin_trustwap act=check_login}>" class="form"  method="post">
+            <input  type="hidden" name="alreadytype"  value="alreadytype">
+            <input  type="hidden" name="data"  value="<{$data.data}>">
+            <input  type="hidden" name="type"  value="<{$data.type}>">
+            <input  type="hidden" name="module"  value="<{$data.module}>">
+            <input  type="hidden" name="redirect"  value="<{$data.redirect}>">
+            <div class="c-g">
+                <label class="c-l">用户名：</label>
+                <div class="c">
+                    <input class="text a-account  action-account-check" type="text" name="uname" id="dom_el_4dcf000" value="" placeholder="用户名/邮箱地址/手机号" vtype="required" data-caution="请填写登录帐号" autofocus="autofocus">
+                </div>
+            </div>
+            <div class="c-g a-need-verify" style="display:none;">
+                <label for="" class="c-l">验证码：</label>
+                <div class="c">
+                  <input type="text" name="mobileVcode" id="" placeholder="填写验证码" class="text"><a href="<{link app=b2c ctl=wap_passport act=send_vcode_sms}>" class="btn orange ib-btn btn-send"><span><span>获取验证码</span></span></a>
+                </div>
+            </div>
+            <div class="c-g">
+                <label class="c-l">密码：</label>
+                <div class="c">
+                    <input class="text" type="password" name="password" id="dom_el_4dcf001" placeholder="填写密码" vtype="required" data-caution="请填写密码" oncontextmenu="return false;" onpaste="return false;">
+                </div>
+            </div>
+          <{if $show_varycode}>
+          <div class="c-g">
+            <label class="c-l">验证码：</label>
+            <div class="c">
+                <{input type="vcode" name="verifycode" class="verify-input" placeholder="填写验证码" data-caution="请正确填写验证码" key='b2c'}>
+            </div>
+          </div>
+          <{/if}>
+            <div class="btn-bar">
+                <button type="submit" class="btn orange" rel="_request">绑定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<form action="<{link app=trustlogin ctl=trustlogin_trustwap act=check_login}>" method="post">
+<div class="trust-login-skip"  style="text-align:center;">
+    没有账号？您可以很快的注册一个账号，或者
+    <input  type="hidden" name="data"  value="<{$data.data}>">
+    <input  type="hidden" name="type"  value="<{$data.type}>">
+    <input  type="hidden" name="skip"  value="jump">
+    <input  type="hidden" name="module"  value="<{$data.module}>">
+    <input  type="hidden" name="redirect"  value="<{$data.redirect}>">
+    <button type="submit" rel="_request"><span><span class="f-red">点此跳过</span></span></button>
+</div>
+</form>
+
+<div class="full-screen" style="margin-top:20px;">
+    <header>
+    <div class="a-bar">
+        <div class="a-name">
+            设置并绑定
+        </div>
+    </div>
+    </header>
+    <div class="full-padding">
+        <form class="form" action="<{link app=trustlogin ctl=trustlogin_trustwap act=set_login}>" method="post">
+            <input  type="hidden" name="alreadytype"  value="alreadytype">
+            <input  type="hidden" name="data"  value="<{$data.data}>">
+            <input  type="hidden" name="type"  value="<{$data.type}>">
+            <input  type="hidden" name="module"  value="<{$data.module}>">
+            <input  type="hidden" name="redirect"  value="<{$data.redirect}>">
+            <div class="c-g">
+                <label class="c-l">登录帐号：</label>
+                <div class="c">
+                    <input class="text a-account action-account-check" type="text" name="pam_account[login_name]" id="dom_el_e2787e0" placeholder="用户名，最少4个字符" vtype="required" data-caution="请填写登录帐号，最少4个字符" autofocus="autofocus">
+                 
+                </div>
+            </div>
+            <div class="c-g a-need-verify" style="display:none;">
+                <label for="" class="c-l">验证码：</label>
+                <div class="c">
+                  <input type="text" name="mobileVcode" id="" placeholder="填写验证码" class="text"><a href="<{link app=b2c ctl=wap_passport act=send_vcode_sms}>" class="btn orange ib-btn btn-send"><span><span>获取验证码</span></span></a>
+                </div>
+            </div>
+            <div class="c-g">
+                <label class="c-l">密码：</label>
+                <div class="c">
+                    <input class="text auto-password-check-handle" type="password" name="pam_account[login_password]" maxlength="20" placeholder="6-20个字符" vtype="required&amp;&amp;minLength:6&amp;&amp;maxLength:20" data-caution="请填写密码，6-20个字符&amp;&amp;输入不正确，最少6个字符&amp;&amp;输入不正确，最多20个字符" id="dom_el_e2787e1" oncontextmenu="return false;" onpaste="return false;">
+                </div>
+            </div>
+            <div class="c-g">
+                <label class="c-l">确认密码：</label>
+                <div class="c">
+                    <input class="text " type="password" name="pam_account[psw_confirm]" id="dom_el_e2787e2" maxlength="20" placeholder="再次填写密码" vtype="equal:pam_account[login_password]" data-caution="密码与确认密码不相符，请重新填写" oncontextmenu="return false;" onpaste="return false;">
+                </div>
+            </div>
+          <{if $show_varycode}>
+          <div class="c-g">
+            <label class="c-l">验证码：</label>
+            <div class="c">
+                <{input type="vcode" name="verifycode" class="verify-input" placeholder="填写验证码" data-caution="请正确填写验证码" key='b2c'}>
+            </div>
+          </div>
+          <{/if}>
+            <div class="btn-bar">
+                <button type="submit" class="btn orange" rel="_request">绑定</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+var Query = {
+    send: function(url, element, data, fn){
+        new Request({
+            url: url,
+            link: 'cancel',
+            onSuccess: function(rs) {
+                var tips = element.retrieve('tips_instance', new formTips({
+                    target: element,
+                    where: 'after',
+                    single: true,
+                    store: true,
+                    autohide: false,
+                    destroy: true
+                })).hide();
+                if(rs) {
+                    try{
+                        rs = JSON.decode(rs);
+                    } catch (e) {}
+                    if(rs.error) {
+                        if(typeof rs.error === 'string') tips.show(rs.error, {type: 'error'});
+                    }
+                    else {
+                        if(typeof rs.success === 'string') tips.show(rs.success, {type: 'success',autohide:3});
+                    }
+                    fn&&fn.call(this, rs);
+                }
+            }
+        }).post(data);
+    }
+};
+function redirect(url) {
+    if(url) top.location.href = url;
+}
+function sendVerify(el, data) {
+    var url = el.href;
+    var textCont = el.getElement('span span');
+    el.addClass('disabled');
+    textCont.innerHTML = el.get('text') + '(<i>0</i>)';
+    var cd = new countdown(textCont.getElement('i'), {
+        start: 120,
+        secondOnly: true,
+        callback: function(e) {
+            el.removeClass('disabled');
+            textCont.innerHTML = '重发验证码';
+        }
+    });
+    Query.send(url, el, data, function(rs) {
+        if(rs.error) {
+            cd.stop();
+            el.removeClass('disabled');
+            textCont.innerHTML = '重发验证码';
+        }
+    });
+}
+
+Module.get(modname).getElement('button[type=submit]').store('_ajax_config', {
+    progress:function(rs){
+        if(rs.error) {
+            if (showVcode || rs.data && rs.data.needVcode) {
+                Module.element(modname, '.action-verifycode').removeClass('hide');
+                changeCode(Module.element(modname, 'img.auto-change-verify-handle'));
+            }
+            return top.Message.error(rs.error,function(){
+                redirect(rs.redirect);
+            });
+        }
+        if(rs.success) return top.Message.success(rs.success + '<br><b>系统即将跳转到登录前页面</b>', function(){
+            redirect(rs.redirect);
+        });
+        redirect(rs.redirect);
+    }
+});
+
+Module.get(modname).addEvents({
+    'change:relay(.action-account-check)': function(e) {
+        if(validatorMap.mobile[1](this, this.value)) {
+            Query.send('<{link app=b2c ctl=site_passport act=login_ajax_account}>', this, this.name + '=' + this.value, function(rs){
+                if(rs.needVerify === 'true') {
+                    Module.element(modname, '.action-need-verify').style.display = '';
+                    if(showVcode) {
+                        Module.element(modname, '.action-verifycode').style.display = 'none';
+                    }
+                }
+            });
+        }
+        else {
+            Module.element(modname, '.action-need-verify').style.display = 'none';
+            if(showVcode) {
+                Module.element(modname, '.action-verifycode').style.display = '';
+            }
+        }
+    },
+    'click:relay(.action-get-verifycode)': function(e) {
+        e.preventDefault();
+        var el = Module.element(modname, '.action-account-check');
+        if(this.hasClass('disabled')) return false;
+        sendVerify(this, el.name + '=' + el.value + '&type=activation');
+    }
+});
+
+</script>

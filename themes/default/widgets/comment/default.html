@@ -1,0 +1,17 @@
+<ul class="comment-list">
+    <{foreach from=$data item=item key=key}>
+    <li class="comment-item">
+    <{if $item.goodsPic}>
+    <a href="<{$item.goodsLink}>" class="product-img">
+        <img src="<{$item.goodsPic|storager:'m'}>" alt="<{$item.goodsName}>" class="img"/>
+    </a>
+    <{/if}>
+    <div class="product-info">
+        <a href="<{$item.goodsLink}>" class="product-name"><{$item.goodsName}></a>
+        <div class="comment">
+            <{$item.comment}>
+        </div>
+    </div>
+    </li>
+    <{/foreach}>
+</ul>

@@ -1,0 +1,560 @@
+<!-- 支付中心主体 -->
+<div id="payment_container" class="payment-container">
+  <div class="title"><h2>订单付款</h2></div>
+  <!-- 支付中心内容 -->
+  <{if $newOrder == 'true'}>
+  <div class="msg-success">
+    <i class="icon">&#x25;</i><span class="msg-cont">您的订单已经提交成功<{if $order.payinfo.pay_app_id != '-1'}>，请尽快付款<{/if}>。</span>
+  </div>
+  <{/if}>
+  <form action="<{$form_action}>" method="post" class="content" id="paycenter_form"<{if $order.payinfo.pay_app_id != 'deposit' || $combination_pay == 'true'}> target="_blank"<{/if}>>
+    <div id="complete_main" class="payment-main">
+      <table class="order-info">
+        <col class="col-1">
+        <col class="col-2">
+        <tbody>
+          <tr>
+            <td>
+              <span class="span-section"><b>订单号：</b><{$order.order_id}><{$deposit|@print_r}></span>
+              <span class="span-section"><b>订单商品数量：</b><{$order.quantity}></span>
+            </td>
+          </tr>
+          <tr>
+              <td><b>收货信息：</b><{$order.consignee.addr}>（<{t}>收货人<{/t}>：<{$order.consignee.name}> <{if $order.consignee.mobile}><{t}>手机<{/t}>：<{$order.consignee.mobile}><{/if}> <{if $order.consignee.telephone}> <{t}>固话:<{/t}><{$order.consignee.telephone}><{/if}> <{if $order.consignee.zip}><{t}>邮编<{/t}>：<{$order.consignee.zip}><{/if}>）<{$order.consignee.r_time}></td>
+            <td align="right" rowspan="2" nowrap>
+              <b>应付金额：</b>
+              <b class="price update-current-amount">
+                <!--预售信息的判断-->
+                <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time  && $order.pay_status=='0' && $prepare.status=='true' && $prepare.promotion_price > $prepare.preparesell_price
+                }>
+                  <{$prepare.preparesell_price|cur:$order.currency}>
+                <{/if}>
+
+                <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time  && $order.pay_status=='0' && $prepare.status=='true' && $prepare.promotion_price == $prepare.preparesell_price
+                }>
+                   <{$order.cur_money|cur:$order.currency}>
+                <{/if}>
+
+                <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.begin_time_final && $order.pay_status=='3'
+                && $prepare.status=='true'
+                }>
+                  尾款支付时间还未开始，敬请等待！
+                <{/if}>
+
+                <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.end_time && $prepare.nowtime < $prepare.begin_time_final && $order.pay_status=='0'
+                && $prepare.status=='true'
+                }>
+                  订金支付时间已过,无法支付！
+                <{/if}>
+
+                <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.end_time_final && ($order.pay_status=='3' || $order.pay_status=='0')
+                && $prepare.status=='true'
+                }>
+                  尾款支付时间已过！
+                <{/if}>
+
+                 <{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final && $prepare.status=='true'
+                }>
+                  <{$order.total_amount-$prepare.preparesell_price|cur:$order.currency}>
+                <{/if}>
+
+
+                <{if $order.promotion_type!='prepare'}>
+                  <{$order.cur_money|cur:$order.currency}>
+                <{/if}>
+              </b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="payment_center" class="payment-center">
+        <div class="payment-info">
+          <input type="hidden" name="payment[order_id]" value="<{$order.order_id}>">
+          <!-- <input type="hidden" name="shipping[shipping_id]" value="<{$order.shipping.shipping_id}>"> -->
+          <input type="hidden" name="payment[def_pay][cur_money]" value="<{$order.cur_money}>">
+          <input type="hidden" name="payment[def_pay][pay_app_id]" value="<{$order.payinfo.pay_app_id}>">
+          <input type="hidden" name="payment[memo]" value="<{$order.memo}>">
+          <input type='hidden' name="pay[password]" id ="pay[password]" value="">
+          <ul>
+            <li class="form-item">
+              <span class="form-label">
+                <i><{t}>已选择支付方式<{/t}>：</i>
+              </span>
+              <span class="form-act">
+                <b><{if $order.payinfo.pay_name}><{$order.payinfo.pay_name}><{else}><{$order.payinfo.pay_app_id|payname}><{/if}></b>
+                <{if $order.payinfo.pay_app_id != '-1'}>
+                  <{if $order.payinfo.platform !='iscommon' && $order.payinfo.platform !='ispc'}>
+                  <{t}>（不支持此支付方式）<{/t}>
+                  <{/if}>
+                <a href="javascript:void(0);" class="lnklike action-choose-payment"><{t}>选择其它支付方式<{/t}> »</a>
+                <{if $order.deposit_status && !$order.pay_password}>
+                &nbsp&nbsp&nbsp
+                <a href="<{link app=b2c ctl=site_member act=securitycenter}>" style='color:red;'>前往设置预存款支付密码</a>
+                <{/if}>
+                <{/if}>
+              </span>
+            <{if $order.payinfo.pay_app_id=='deposit' && $order.promotion_type!='prepare'}>
+            <{if $combination_pay == 'true' && $deposit_money - $order.cur_money < 0}>
+              <input type="hidden" name="payment[combination_pay]" value="true">
+              <span class="form-act"><{t}>预存款余额<{/t}>：<b class="unavailable"><{$deposit_money|cur_odr:$order.currency}></b> <em>(预存款余额不足，您可以<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge">为预存款充值</a>)</em></span>
+              <{if ($deposit_money-0) }>
+              <span class="form-act">
+                <input type="checkbox" name="payment[def_pay][cur_money]" value="<{$deposit_money}>" id="" class="action-other-payment">
+                <input type="hidden" name="payment[other_online][cur_money]" value="<{$order.cur_money - $deposit_money}>">
+                <{t}>用预存款余额支付<{/t}> <b class="price"><{$deposit_money|cur_odr:$order.currency}></b>
+                ，<{t}>选择其他支付方式支付剩余金额<{/t}> <b class="price update-remain-amount"><{$order.cur_money - $deposit_money|cur_odr:$order.currency}></b>
+              </span>
+              <{/if}>
+            <{else}>
+            <input type="hidden" name="payment[combination_pay]" value="false">
+            <span class="form-act"><{t}>预存款余额<{/t}>：<b class="price"><{$deposit_money|cur_odr:$order.currency}></b> <{if $deposit_money-$order.total_amount < 0}> <em>您需要为<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge"><{t}>预存款充值<{/t}></a>，<{t}>充值完成后请<{/t}><a href="<{link app=b2c ctl=site_paycenter arg0=$order.order_id}>" class="lnklike"><{t}>刷新此页面<{/t}></a></em><{/if}></span>
+            <{/if}>
+            <{/if}>
+
+            <{if $order.payinfo.pay_app_id=='deposit' && $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final }>
+            <{if $combination_pay == 'true' && $deposit_money - $prepare.preparesell_price < 0}>
+              <input type="hidden" name="payment[combination_pay]" value="true">
+              <span class="form-act"><{t}>预存款余额<{/t}>：<b class="unavailable"><{$deposit_money|cur_odr:$order.currency}></b> <em>(预存款余额不足，您可以<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge">为预存款充值</a>)</em></span>
+              <{if ($deposit_money-0) }>
+              <span class="form-act">
+                <input type="checkbox" name="payment[def_pay][cur_money]" value="<{$deposit_money}>" id="" class="action-other-payment">
+                <input type="hidden" name="payment[other_online][cur_money]" value="<{$order.cur_money - $deposit_money}>">
+                <{t}>用预存款余额支付<{/t}> <b class="price"><{$deposit_money|cur_odr:$order.currency}></b>
+                 ，<{t}>选择其他支付方式支付剩余金额<{/t}> <b class="price update-remain-amount"><{$order.cur_money - $deposit_money|cur_odr:$order.currency}></b>
+              </span>
+              <{/if}>
+            <{else}>
+            <input type="hidden" name="payment[combination_pay]" value="false">
+            <span class="form-act"><{t}>预存款余额<{/t}>：<b class="price"><{$deposit_money|cur_odr:$order.currency}></b> <{if $deposit_money-$prepare.preparesell_price < 0}> <em>您需要为<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge"><{t}>预存款充值<{/t}></a>，<{t}>充值完成后请<{/t}><a href="<{link app=b2c ctl=site_paycenter arg0=$order.order_id}>" class="lnklike"><{t}>刷新此页面<{/t}></a></em><{/if}></span>
+            <{/if}>
+            <{/if}>
+
+             <{if $order.payinfo.pay_app_id=='deposit' && $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time }>
+            <{if $combination_pay == 'true' && $deposit_money - ($order.total_amount-$prepare.preparesell_price) < 0}>
+              <input type="hidden" name="payment[combination_pay]" value="true">
+              <span class="form-act"><{t}>预存款余额<{/t}>：<b class="unavailable"><{$deposit_money|cur_odr:$order.currency}></b> <em>(预存款余额不足，您可以<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge">为预存款充值</a>)</em></span>
+              <{if ($deposit_money-0) }>
+              <span class="form-act">
+                <input type="checkbox" name="payment[def_pay][cur_money]" value="<{$deposit_money}>" id="" class="action-other-payment">
+                <input type="hidden" name="payment[other_online][cur_money]" value="<{$order.cur_money - $deposit_money}>">
+                <{t}>用预存款余额支付<{/t}> <b class="price"><{$deposit_money|cur_odr:$order.currency}></b>
+                ，<{t}>选择其他支付方式支付剩余金额<{/t}> <b class="price update-remain-amount"><{$order.cur_money - $deposit_money|cur_odr:$order.currency}></b>
+              </span>
+              <{/if}>
+            <{else}>
+            <input type="hidden" name="payment[combination_pay]" value="false">
+            <span class="form-act"><{t}>预存款余额<{/t}>：<b class="price"><{$deposit_money|cur_odr:$order.currency}></b> <{if $deposit_money-($order.total_amount-$prepare.preparesell_price) < 0}> <em>您需要为<a href="<{link app=b2c ctl=site_member act=deposit}>" target="_blank" class="lnklike action-recharge"><{t}>预存款充值<{/t}></a>，<{t}>充值完成后请<{/t}><a href="<{link app=b2c ctl=site_paycenter arg0=$order.order_id}>" class="lnklike"><{t}>刷新此页面<{/t}></a></em><{/if}></span>
+            <{/if}>
+            <{/if}>
+
+            </li>
+            <{if $support_bank}>
+            <{include file='site/paycenter/check_bank.html'}>
+            <{/if}>
+            <!-- 非货到付款或线下支付显示去付款 -->
+            <{if $order.promotion_type!='prepare'}>
+              <{if !($order.payinfo.pay_app_id == '-1' || $order.payinfo.pay_app_id == 'offline')}>
+              <li class="form-item">
+                <span class="form-act">
+                <{if $order.payinfo.pay_app_id == 'deposit' && ($order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc') }>
+                  <{if $order.cur_money - $deposit_money <= 0}>
+                  <{button type="submit" class="btn-import btn-big action-prepaid" label="去付款"}>
+                  <{/if}>
+                <{else}>
+                  <{if $order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc'}>
+                    <{if $order.payinfo.pay_app_id == 'wxqrpay'}>
+                      <div>
+                      <{button type="button" class="btn-import btn-big qrcode-pay" label="去付款"}>
+                      </div>
+                    <{else}>
+                      <{button type="submit" class="btn-import btn-big action-pay" label="去付款"}>
+                    <{/if}>
+                  <{/if}>
+                <{/if}>
+                </span>
+              </li>
+              <{/if}>
+              <!--预售信息判断-->
+              <{else}>
+
+              <{if !($order.payinfo.pay_app_id == '-1' || $order.payinfo.pay_app_id == 'offline')}>
+              <li class="form-item">
+                <span class="form-act">
+                  <!--预存款支付方式的-->
+                <{if $order.payinfo.pay_app_id == 'deposit' && ($order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc') }>
+
+
+                    <{if $prepare.nowtime < $prepare.begin_time && $prepare.status=='true'}>
+                      活动还未开始!
+                    <{/if}>
+
+                    <{if $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time  && $order.pay_status=='0' && $prepare.status=='true' && $prepare.preparesell_price - $deposit_money <= 0}>
+                      <{button type="submit" class="btn-import btn-big action-prepaid" label="去付订金"}>
+                    <{/if}>
+                    <{if $prepare.nowtime < $prepare.begin_time_final  && $order.pay_status=='3' && $prepare.status=='true'}>
+                      <{button type="submit" disabled="false" class="btn-import btn-big" label="等待支付尾款"}>
+                    <{/if}>
+                    <{if $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final  && $order.pay_status=='3' && $prepare.status=='true' && $deposit_money - ($order.total_amount-$prepare.preparesell_price) >= 0}>
+                      <{button type="submit"  class="btn-import btn-big" action-prepaid label="支付尾款"}>
+                    <{/if}>
+                    <{if $prepare.nowtime > $prepare.end_time_final && $prepare.status=='true'}>
+                      <{button type="submit" disabled="false" class="btn-import btn-big" label="活动结束"}>
+                    <{/if}>
+                <!--别的支付方式的-->
+                <{else}>
+                  <{if $order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc'}>
+                    <{if $prepare.nowtime < $prepare.begin_time && $prepare.status=='true'}>
+                      活动还未开始!
+                    <{/if}>
+                    <{if $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time  && $order.pay_status=='0' && $prepare.status=='true'}>
+                      <{button type="submit" class="btn-import btn-big action-pay" label="去付订金"}>
+                    <{/if}>
+
+                    <{if $prepare.nowtime < $prepare.begin_time_final  && $order.pay_status=='3' && $prepare.status=='true'}>
+                      <{button type="submit" disabled="false" class="btn-import btn-big" label="等待支付尾款"}>
+                    <{/if}>
+                    <{if $prepare.nowtime > $prepare.end_time_final && $prepare.status=='true'}>
+                      <{button type="submit" disabled="false" class="btn-import btn-big" label="活动结束"}>
+                    <{/if}>
+
+                     <{if $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final  && $order.pay_status=='3' && $prepare.status=='true'}>
+                      <{button type="submit" class="btn-import btn-big" label="支付尾款" action-pay}>
+                    <{/if}>
+
+                  <{/if}>
+                <{/if}>
+                </span>
+              </li>
+              <{/if}>
+
+            <{/if}>
+          </ul>
+          <{if $order.payinfo.pay_app_id=='deposit' && $deposit_money - $order.total_amount < 0}>
+          <div id="payment_recharge" class="payment-recharge" style="display:none;">
+            <p><{t}>请在新开的预存款充值页面进行充值，充值结束后请选择：<{/t}></p>
+            <p><a href="javascript:location.reload();" class="btn btn-caution"><span><span>充值成功</span></span></a>　　<a href="javascript:location.reload();" class="btn btn-simple"><span><span>充值失败</span></span></a></p>
+          </div>
+          <{if $combination_pay == 'true'}>
+          <{if($order.deposit_status !='false' && $order.pay_password !='')}>
+          <div class="popup-content" style="display:none;">
+            请输入您的预存款支付密码：<{input type="password" name="pay_password" id="pay_password" vtype="required"}><{button type="submit" class="btn-caution" onclick="check_password()" rel="_request" label="确定"}><br><span id ="show_paystatus" style="color:red;"></span>
+            <h4><{t}>为剩余选择支付方式：<{/t}></h4>
+            <div class="change-payment">
+              <table>
+                <tbody>
+                  <{foreach from=$payments item=payment_row}>
+                  <{if $payment_row.app_pay_type == 'true' && $payment_row.app_id != 'deposit'}>
+                  <tr>
+                    <th>
+                      <input type="radio" name="payment[other_online][pay_app_id]" id="pay_type" value="<{$payment_row.app_id}>" disabled= true  class="action-change-payment-online" vtype="requiredcustom" data-validatemsg="请选择一种支付方式">
+                      <label for=""><{$payment_row.app_name}></label>
+                    </th>
+                    <td><{$payment_row.app_pay_brief}></td>
+                  </tr>
+                  <{/if}>
+                  <{/foreach}>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2">
+                      <{if $order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc'}>
+                      <{button type="submit" class="btn-import btn-big action-combine-pay disabled" id="not_pay" label="去付款"}>
+                      <{button type="submit" class="btn-import btn-big action-combine-pay" id="go_pay" style="display:none" label="去付款"}>
+                      <{/if}>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <{else}>
+          <div class="popup-content" style="display:none;">
+            <h4><{t}>为剩余选择支付方式：<{/t}></h4>
+            <div class="change-payment">
+              <table>
+                <tbody>
+                  <{foreach from=$payments item=payment_row}>
+                  <{if $payment_row.app_pay_type == 'true' && $payment_row.app_id != 'deposit'}>
+                  <tr>
+                    <th>
+                      <input type="radio" name="payment[other_online][pay_app_id]" id="pay_type" value="<{$payment_row.app_id}>" class="action-change-payment-online" vtype="requiredcustom" data-validatemsg="请选择一种支付方式">
+                      <label for=""><{$payment_row.app_name}></label>
+                    </th>
+                    <td><{$payment_row.app_pay_brief}></td>
+                  </tr>
+                  <{/if}>
+                  <{/foreach}>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2">
+                      <{if $order.payinfo.platform =='iscommon' || $order.payinfo.platform =='ispc'}>
+                      <{button type="submit" class="btn-import btn-big action-combine-pay" id="go_pay" label="去付款"}>
+                      <{/if}>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <{/if}>
+          <{/if}>
+          <{/if}>
+          <{if $order.payinfo.pay_des && $order.payinfo.pay_des != '&nbsp;'}>
+          <div class="payment-tips">
+            <h3>温馨提示：</h3>
+            <p><{$order.payinfo.pay_des}></p>
+          </div>
+          <{/if}>
+        </div>
+
+      </div>
+    </div>
+  </form>
+  <div class="may-need">您可能需要：
+    <a href="<{link app=b2c ctl=site_member act=orderdetail arg0=$order.order_id}>" class="lnklike" target="_blank"><i>查看订单</i> <q class="icon">3</q></a>
+    <a href="<{link app=content ctl=site_article act=l arg0=1}>" class="lnklike" target="_blank"><i>查看帮助</i> <q class="icon">3</q></a>
+    <a href="./" class="lnklike" target="_blank"><i>继续购物</i> <q class="icon">3</q></a>
+  </div>
+</div>
+
+<div id="payment_online" class="payment-online" style="display:none;">
+  <p><{t}>请在新开的支付平台页面进行付款，付款操作结束前请不要关闭页面，付款后选择<{/t}>：</p>
+  <div class="pay-stat">
+    <div class="pay-success">
+      <h4>支付成功：</h4>
+      <div class="action">
+        <a href="<{link app=b2c ctl=site_member act=orderdetail arg0=$order.order_id}>" class="lnklike popup-btn-close"  target="_blank">查看订单</a>
+      </div>
+    </div>
+    <div class="pay-failure">
+      <h4>支付失败：</h4>
+      <div class="action">
+        <a href="javascript:location.reload();" class="lnklike popup-btn-close">重新支付</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function check_password(){
+  var password = $('pay_password').get('value');
+  var pingRequest = new Request({
+  data: "pay_password="+password,
+  url: '<{$form_check}>',
+  onSuccess:  function(rs){
+    var rs = JSON.decode(rs);
+    if(rs){
+      if(rs.error){
+        Dialog.alert(rs.error);
+      }else{
+        $$('.action-change-payment-online').set('disabled', false);
+        $('not_pay').setStyle('display','none');
+        $('go_pay').setStyle('display','block');
+        Dialog.alert('支付密码验证通过。');
+        $("pay[password]").value = password;
+      }
+    }
+  },
+  });
+  pingRequest.send();
+}
+Object.merge(validatorMap, {
+    requiredcustom: function(element, v, type, parent){
+        var name = element.name;
+        if(!parent.getElements('input[type=' + type + ']' + name ? '[name="' + name + '"]' : '').some(function(el) {
+            return el.checked == true && el.value != '0';
+        })) {
+            showWarn(parent, element.get('data-validatemsg'));
+            return false;
+        }
+        return true;
+    }
+});
+
+function hideWarn(el) {
+    el.retrieve('tips_instance', {hide: function(){}}).hide();
+}
+function showWarn(el, msg) {
+    formTips.warn(msg, el);
+    return false;
+}
+function pay_confirm (el, method) {
+    if(method == 'online') {
+        new Dialog($('payment_online').wrapped(),{
+            modal:true,
+            width:350,
+            title: '提醒',
+            effect: false,
+            component: {
+                container: 'alert-container',
+                body: 'alert-body',
+                header: 'alert-header',
+                close: 'alert-btn-close'
+            },
+            onClose: function(){
+                location.reload();
+            }
+        });
+    }
+    else {
+        if(<{$order.deposit_status}> && '<{$order.pay_password}>' !='') {
+          new Dialog(new Element('div', {html: '<div class="pop-attention-main"><form action="<{$form_check}>" method="post">请输入您的预存款支付密码：<{input type="password" name="pay_password" id="pay_password" vtype="required"}><br><span id ="show_paystatus" style="color:red;"></span><br><div class="bottom"><{button type="submit" class="btn-caution" rel="_request" label="确定"}>　　<{button type="button" class="btn-simple popup-btn-close" label="取消"}></div></form></div>'}), {
+              width: 400,
+              modal: window,
+              pins: true,
+              position: {
+                  intoView: true
+              },
+              onShow: function(e) {
+                  this.content.getElement('[type=submit]').store('_ajax_config', {
+                      onSuccess: function(rs) {
+                          if(rs && rs[0]) {
+                            if(!rs[0].error) {
+                                Dialog.confirm('确定用你的预存款帐户支付这笔订单金额 <b class="price"><{if $order.promotion_type!='prepare'}><{$order.cur_money|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare' && $prepare.preparesell_price==$prepare.promotion_price}><{$order.cur_money|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare'&& $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time && $prepare.preparesell_price<$prepare.promotion_price}><{$prepare.preparesell_price|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final && $prepare.preparesell_price<$prepare.promotion_price}><{$order.total_amount-$prepare.preparesell_price|cur:$order.currency}><{/if}></b> 吗？', function(e){
+                                    if(e){
+                                        $("pay[password]").value = $("pay_password").value;
+                                        el.getParent('form').submit();
+                                    }
+                                });
+                            }
+                          }
+                      }
+                  });
+              }
+          });
+        }else{
+          Dialog.confirm('确定用你的预存款帐户支付这笔订单金额 <b class="price"><{if $order.promotion_type!='prepare'}><{$order.cur_money|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare' && $prepare.preparesell_price==$prepare.promotion_price}><{$order.cur_money|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare'&& $prepare.nowtime > $prepare.begin_time && $prepare.nowtime < $prepare.end_time && $prepare.preparesell_price<$prepare.promotion_price}><{$prepare.preparesell_price|cur:$order.currency}><{/if}><{if $order.promotion_type=='prepare' && $prepare.nowtime > $prepare.begin_time_final && $prepare.nowtime < $prepare.end_time_final && $prepare.preparesell_price<$prepare.promotion_price}><{$order.total_amount-$prepare.preparesell_price|cur:$order.currency}><{/if}></b> 吗？', function(e){
+              if(e){
+                el.getParent('form').submit();
+              }
+          });
+        }
+    }
+}
+
+function qrcode_pay() {
+  var dialog = new Dialog("<{$form_action}>", {
+            width: 630,
+            title: '微信扫一扫',
+            modal: true,
+            async: 'ajax',
+            asyncOptions: {
+                method: 'post',
+                data: 'payment[order_id]=<{$order.order_id}>&payment[def_pay][cur_money]=<{$order.cur_money}>&payment[def_pay][pay_app_id]=<{$order.payinfo.pay_app_id}>&payment[memo]=<{$order.memo}>',
+                onComplete: function() {
+                    dialog.position();
+                    $$('.popup-container')[0].setStyle('z-index', '10001');
+                    $$('.mask')[0].setStyle('z-index', '10000');
+                }
+            }
+   });
+}
+function loadPayment(data) {
+    new Request({
+        url: '<{link app=b2c ctl=site_order act=payment_change}>',
+        onComplete: function (rs) {
+            location.reload();
+        }
+    }).post(data.toQueryString() + '&order_id=<{$order.order_id}>');
+}
+
+$('paycenter_form').addEvent('submit', function(e){
+    this.getElement('[type=submit]').disabled = true;
+});
+
+$(document.body).addEvents({
+    'click:relay(.action-choose-payment)': function(e) {
+        e.stop();
+        var dialog = new Dialog('<{link app=b2c ctl=site_order act=select_payment}>', {
+            width: 800,
+            title: '修改支付方式',
+            modal: true,
+            async: 'ajax',
+            asyncOptions: {
+                method: 'post',
+                data: 'shipping[shipping_id]=<{$order.shipping.shipping_id}>&payment[def_pay][pay_app_id]=<{$order.payinfo.pay_app_id}>&prepare[promotion_type]=<{$order.promotion_type}>',
+                onComplete: function() {
+                    dialog.position();
+                    $$('.popup-container')[0].setStyle('z-index', '10001');
+                    $$('.mask')[0].setStyle('z-index', '10000');
+                }
+            }
+        });
+    },
+    // 预付款提示
+    'click:relay(.action-prepaid)': function(e) {
+        e.stop();
+        if(this.disabled) return;
+        pay_confirm(this, 'prepaid');
+    },
+    'click:relay(.action-pay)': function(e) {
+        if(this.disabled) return;
+        //e.stop();
+        pay_confirm(this, 'online');
+    },
+    //= 组合支付
+    'click:relay(.action-combine-pay)': function(e) {
+        var parent = this.getParent('.change-payment');
+        if(validate(parent, 'all')) {
+            hideWarn(parent);
+            pay_confirm(target, 'online');
+        }
+    },
+    //= 确认支付方式
+    'click:relay(.action-confirm-payment)': function(e) {
+        var parent = this.getParent('.change-payment');
+        if(validate(parent, 'all')) {
+            hideWarn(parent);
+            var update = $('payment_center');
+            loadPayment(parent, update);
+        }
+    },
+    'click:relay(.qrcode-pay)': function(e) {
+      if(this.disabled) return;
+
+      new Request({
+        url:'<{link app=b2c ctl=site_passport act=ajax_check_login}>',
+        onComplete:function(rs) {
+
+          rs = JSON.parse(rs);
+          if( rs.status == true ){
+            qrcode_pay();
+          }else{
+            Dialog.confirm('登录超时，请重新登录。',function(e){
+              if( e ){
+               location.href = rs.url;
+              }
+            });
+          }
+        }
+      }).post();
+    },
+    'click:relay(.action-recharge)': function(e) {
+        new Dialog($('payment_recharge').wrapped(), {
+            width:400,
+            modal:true
+        });
+    },
+    //= 选择支付方式
+    'change:relay(.action-change-payment)': function(e){
+        var selected = this.getParent('tr').addClass('selected').getSiblings('tr.selected')[0];
+        selected && selected.removeClass('selected');
+    },
+    'change:relay(.action-other-payment)': function(e) {
+        this.getParent('.payment-info').getElement('.popup-content').setStyle('display', this.checked ? '' : 'none');
+    },
+    'change:relay(.action-change-payment-online)':function(e){
+        new Request({
+            url: '<{link app=b2c ctl=site_paycenter act=get_payment_money}>',
+            onComplete: function (rs) {
+                rs = JSON.decode(rs);
+                $$('.update-current-amount').set('text', rs.total_amount);
+                $$('.update-remain-amount').set('text', rs.cur_money);
+            }
+        }).post($('payment_center'));
+    }
+});
+<{if $order.payinfo.pay_app_id == 'wxqrpay'}>
+ //qrcode_pay();
+<{/if}>
+</script>

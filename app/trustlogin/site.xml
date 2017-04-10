@@ -1,0 +1,12 @@
+<site>
+    <module controller='trustlogin_trust' >
+        <name>trustlogin</name>
+        <title>信任登陆</title>
+        <disable>false</disable>
+    </module>
+    <module controller='trustlogin_trustwap' >
+        <name>trustloginwap</name>
+        <title>信任登陆</title>
+        <disable>false</disable>
+    </module>
+</site>

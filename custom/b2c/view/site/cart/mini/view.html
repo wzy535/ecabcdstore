@@ -1,0 +1,13 @@
+<{if $aCart.items_quantity && $item_section}>
+<ul class="minicart-list clearfix">
+  <{foreach from=$item_section item=section}>
+  <{include file=$section.file app=$section.app}>
+  <{/foreach}>
+</ul>
+<div class="minicart-info">
+  <p><{t}>共<{/t}> <i><{$aCart.items_quantity}></i> <{t}>件商品<{/t}><br/><{t}>商品总金额<{/t}><span class="price"><{$aCart.subtotal_prefilter_after|cur_odr}></span><br/><{t}>订单优惠金额：<{/t}><span class="price"><{$aCart.discount_amount_order|cur_odr}></span><br/><{t}>金额总计：<{/t}><span class="price"><{$aCart._cookie.CART_TOTAL_PRICE|cur_odr}></span></p>
+  <p> <a href="<{link app=b2c ctl=site_cart act=index}>" class="btn-tocart"><{t}>去结算<{/t}></a> </p>
+</div>
+<{else}>
+<div class="no-information"><{t}>购物车中还没有商品，赶紧选购吧！<{/t}></div>
+<{/if}>

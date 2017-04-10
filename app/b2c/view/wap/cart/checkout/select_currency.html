@@ -1,0 +1,16 @@
+<input type="hidden" name="payment[currency]" value="<{$current_currency}>" />
+<{if(!$payments && $has_cod == 'false')}>
+    <li class="pay-item gb t-c">本配送方式没有可用的支付方式，请选择其他的配送方式。</li>
+<{else}>
+<{foreach from=$payments item="payment" key="key" name="payments"}>
+    <li class="pay-item gb t-c" payment_app_id="<{$payment.app_id}>" payment_app_name='<{$payment.app_display_name}>' value='{"pay_app_id":"<{$payment.app_id}>","payment_name":"<{$payment.app_display_name}>"}' id="pay_app_id_<{$payment.app_id}>">
+        <{$payment.app_display_name}>
+    </li>
+<{/foreach}>
+
+<{if $has_cod == 'true'}>
+    <li class="pay-item gb t-c" payment_app_id="-1" payment_app_name="货到付款" value='{"pay_app_id":"-1","payment_name":"货到付款"}' id="pay_app_id_0">
+        货到付款
+    </li>
+<{/if}>
+<{/if}>

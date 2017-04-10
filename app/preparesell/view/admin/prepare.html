@@ -1,0 +1,226 @@
+<{capture name="header"}>
+<{lang_script src="lang.js" app='b2c'}>
+<{script src="goodseditor.js" app="b2c"}>
+<{script src="coms/pager.js" app='desktop'}>
+<{script src="coms/datapicker.js"  app='desktop'}>
+
+<{/capture}>
+
+<script>
+
+
+
+function _callback_prepare( rs ) {
+  //alert(rs);
+    var _data = JSON.decode(rs);
+    if ( !_data ) return ;
+    for( i in _data ) {
+        if ( $('id_' + i) ) {
+            $('id_' + i ).set('value', _data[i]);
+        }
+    }
+
+   new Request.HTML({
+            update:$('goods-spec'),
+            url:'<{$callback_ajax_url}>',method:'post',
+            data:'id=' + _data['id'],
+            //onRequest: function( tt ) {
+            //  alert(tt);
+            //},
+            onComplete: function(tt) {
+                $('id_goods_type').set('value', 'normal');
+                if( $('gEditor-GId-input') )
+                    $('gEditor-GId-input').set('value',_data['goods_id']);
+                if( $('id_old_bn') )
+                    $('id_old_bn').set('value',_data['bn']);
+                if( $('gEditor-GType-input') )
+                    $('gEditor-GType-input').set('disabled',true);
+                if( $('id_new_bn'))
+                    $('id_new_bn').getParent().setStyle('display', '');
+                $$('.class-bn').set('disabled', true);
+            }
+        }).send();
+}
+
+if( $('id_new_bn') ) {
+    $('id_new_bn').addEvent('click', function(item){
+        if( $(this).checked ) {
+            $$('.class-bn').set('disabled', false);
+        } else {
+            $$('.class-bn').set('disabled', true);
+        }
+    });
+}
+</script>
+
+
+
+<form id="preparesell_form" name="preparesell_form"  method='post' action='index.php?app=preparesell&ctl=admin_preparesell&act=save_rule'>
+<input type="hidden" name="ruledata[prepare_id]" value="<{$ruleInfo.prepare_id}>">
+<h3><{t}>基本信息<{/t}></h3>
+<div id="x-g-basic" class="goods-detail">
+
+        <div class="tableform">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th><em class="red">*</em><{t}>预售商品：<{/t}></th>
+                    <td>
+                        <div class="fl">
+                         <{if !$goods.goods_id}>
+                           <{input name="goods_id" type="object" object=goods breakpoint=0   app=b2c cols="name"  filter=$filter  callback='_callback_prepare' value=$ruleInfo.goods_id textcol="name" view="b2c:admin/goods/rows.html"}>  <{help}><{t}>您必须选择无库存也可销售的商品作为预售商品<{/t}><{/help}>
+                        <{/if}>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                  <th><em class="red">*</em><{t}>规则名称：<{/t}></th>
+                  <td><{input type="text" name="preparename" style="width:120px" required="true" vtype='required' value=$ruleInfo.preparename}></td>
+                </tr>
+
+                <tr>
+                  <th><{t}>规则描述：<{/t}></th>
+                  <td><{input type="textarea" vtype='required' style=" width:50%" class="inputstyle" name="description" value=$ruleInfo.description rows="8"}></td>
+                </tr>
+
+                <tr>
+                  <th><em class="red">*</em><{t}>支付订金开始时间：<{/t}></th>
+                  <td><{input type="hour" name="begin_time" value=$ruleInfo.begin_time vtype="required"}></td>
+                </tr>
+
+                <tr>
+                  <th><em class="red">*</em><{t}>支付订金结束时间：<{/t}></th>
+                  <td><{input type="hour" name="end_time" value=$ruleInfo.end_time vtype="required"}></td>
+                </tr>
+
+                <tr>
+                  <th><em class="red">*</em><{t}>支付尾款开始时间：<{/t}></th>
+                  <td><{input type="hour" name="begin_time_final" value=$ruleInfo.begin_time_final vtype="required"}></td>
+                </tr>
+
+                <tr>
+                  <th><em class="red">*</em><{t}>支付尾款结束时间：<{/t}></th>
+                  <td><{input type="hour" name="end_time_final" value=$ruleInfo.end_time_final vtype="required"}></td>
+                </tr>
+
+               <!--  <tr>
+                  <th><em class="red">*</em><{t}>订金金额设置方式：<{/t}></th>
+                  <td id='rule' >
+                    预售金额=销售价X<{input type="text" name="prepares_rule" style="width:120px" required="true"  value=$ruleInfo.prepares_rule}>&nbsp;%
+                  </td>
+                </tr> -->
+
+                <tr>
+                  <th><em class="red">*</em><{t}>是否设置预售提醒：<{/t}></th>
+                  <td><{input type="bool" class="act-remind" name="ruledata[remind]" value=$ruleInfo.remind}></td>
+                </tr>
+
+                <tr class="remind" <{if $ruleInfo.remind=='false' || !$ruleInfo.remind}> style="display:none"  <{/if}> >
+                    <th><{t}>发送提醒方式：<{/t}></th>
+                    <td id="remind">
+                          <{foreach from=$remind_way item=remind key=key}>
+                          <label><input type="checkbox" value="<{$key}>" name="ruledata[remind_way][]" <{if ($ruleInfo.remind_way != '') && in_array($key,$ruleInfo.remind_way)}>checked<{else}> <{if $key=="msgbox"}>checked<{/if}><{/if}>/><{$remind}></label>
+                          <{/foreach}>
+                      <em><font color='red'>默认站内信提醒</font></em>
+                    </td>
+                </tr>
+
+                <tr class="remind" <{if $ruleInfo.remind=='false' || !$ruleInfo.remind}> style="display:none"  <{/if}>>
+                  <th><{t}> 于支付尾款开始时间前：<{/t}></th>
+                  <td><{input type="text" name="remind_time" vtype="unsigned" vtype="required" value=$ruleInfo.remind_time size="5"}>小时发送提醒短信提醒</td>
+                </tr>
+
+                <tr>
+                  <th><em class="red">*</em><{t}>下单后多长时间订单自动失效：<{/t}></th>
+                  <td><{input type="unsignedint" name="timeout" value=$ruleInfo.timeout size="5" vtype="required"}>小时</td>
+                </tr>
+
+                <tr>
+                  <th><em><font color='red'>*</font></em><{t}>启用状态：<{/t}></th>
+                  <td><{input type="bool" name="status" value=$ruleInfo.status}></td>
+                </tr>
+
+            </table>
+
+        </div>
+</div>
+
+<div class="tableform" id="goods-spec">
+        <{include file="admin/preparesell/spec/spec.html"  app="preparesell"}>
+</div>
+
+
+
+
+<{capture name='footbar'}>
+<table cellspacing="0" cellpadding="0" class="table-action">
+      <tbody><tr valign="middle">
+        <td>
+                <{assign var="___a"  value="关  闭"}>
+                <{assign var="___c"  value=$___b2c='确定退出?'|t:'b2c'}>
+                <!--判断预售时间-->
+               <{if $ruleInfo.begin_time < $nowtime && $nowtime < $ruleInfo.end_time_final}>
+                <{else}>
+                 <{button label=$___b2c="保存并关闭窗口"|t:'b2c' class="btn-primary" type="button" id="submitForm" onclick="submitForm(event,2)"}>
+               <{/if}>
+                <!--<{button label="保  存" class="btn-primary" onclick="submitForm(event,1)"}>-->
+                <{button label=$___content=$___a|t:'content' class="btn-secondary" type="button" onclick="if(confirm('{$___c}'))window.close()"}>
+        </td>
+        </tr>
+        </tbody></table>
+<{/capture}>
+</form>
+<script>
+
+    $$('.act-autoclose').addEvent('click', function(e){
+        if(this.value == 'true') {
+            $$('.timeout1').show();
+        }
+        else if(this.value == 'false') {
+            $$('.timeout1').hide();
+        }
+    });
+    $$('.act-custom').addEvent('click', function(e){
+        if(this.value == 'other') {
+            this.getNext('input[type=text]').show();
+        }
+        else {
+            this.getNext('input[type=text]').hide();
+        }
+    });
+    $$('.act-remind').addEvent('click', function(e){
+        console.log(this.value);
+        if(this.value == 'true') {
+            $$('.remind').show();
+        }
+        else {
+            $$('.remind').hide();
+        }
+    });
+    var submitForm = function (event,sign){
+        var _form=$('preparesell_form');
+
+        switch (sign){
+            case 1:
+            var target={
+                onComplete:function(){
+                    location.reload();
+            }};
+            break;
+            case 2:
+            var target={
+                onComplete:function(rs){
+                    if(rs&&!!JSON.decode(rs).success){
+                        try{
+                            window.opener.finderGroup['<{$env.get.finder_id}>'].refresh();
+                            window.close();
+                        }catch(e){}
+                    }
+            }};
+            break;
+        }
+        _form.store('target',target);
+        _form.fireEvent('submit',new Event(event));
+    };
+</script>
+
+

@@ -1,0 +1,22 @@
+<div class="sales-charts">
+    <div class="charts-title"><{$setting.block_name}></div>
+    <div class="charts-content">
+        <ul class="product-list">
+	        <{assign var=num  value='1'}>
+            <{foreach from=$data.goodsRows item=row key=gid name=goodsrow}>
+            <li class="product-item<{if $env.foreach.goodsrow.iteration%5 == 0}> last<{/if}>">
+            <span class="num-<{$num}>"></span>
+	        <{assign var=pickey  value=$setting.gpic_size|default:'goodsPicS' }>
+            <a href="<{$row.goodsLink}>" class="product-img">
+                <img src="<{$row[$pickey]}>" alt="<{$row.goodsName}>" class="img"/>
+            </a>
+            <div class="product-info">
+                <div class="product-name"><{$row.goodsName}></div>
+                <div class="product-price">销售价：<{$row.goodsSalePrice|cur}></div>
+            </div>
+	        <{assign var=num  value=$num+1}>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>

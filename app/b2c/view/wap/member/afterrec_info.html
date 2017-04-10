@@ -1,0 +1,70 @@
+<header class="top">
+  <a href="javascript:history.back()" class="a-back abs-back"><i class="arr left"></i></a>
+  <h1>物流信息查询</h1>
+</header>
+<div class="full-screen logistic">
+<section class="brief">
+    <ul>
+        <li>物流单号：<span><{$delivery.0.logi_no}></span></li>
+        <li>物流公司：<span><{$delivery.0.logi_name}></span></li>
+        <li>发货时间：<span>2015-12-13 12:00</span></li>
+    </ul>
+</section>
+<section class="detail">
+    <ul>
+        <li>
+            <p class="log-date">2015-12-13 12:00</p>
+            <p class="log-info">【上海徐汇区】的派件员正在派件</p>
+        </li>
+        <li>
+            <p class="log-date">2015-12-13 12:00</p>
+            <p class="log-info">快件到达【上海徐汇区】，上一站是【上海分拨中心】</p>
+        </li>
+        <li>
+            <p class="log-date">2015-12-13 12:00</p>
+            <p class="log-info">快件到达【上海分拨中心】，上一站是【上海虹口六站】</p>
+        </li>
+        <li>
+            <p class="log-date">2015-12-13 12:00</p>
+            <p class="log-info">您的订单已经拣货完毕，待出库，货物订单号为349357349067</p>
+        </li>
+        <li>
+            <p class="log-date">2015-12-13 12:00</p>
+            <p class="log-info">您的订单提交成功，等待系统确认</p>
+        </li>
+    </ul>
+</section>
+
+</div>
+<script>
+function show_logistics(url) {
+    var logistics = $('.detail');
+    var xmlHttp;
+    try{
+        xmlHttp=new XMLHttpRequest();        
+    }catch(e){
+        try{
+            xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+        }catch(e){
+            try{
+                xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }catch(e){
+                return false;
+            }
+        }
+    }
+    xmlHttp.open('post',url);
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            logistics[1].innerHTML = xmlHttp.responseText;
+        }
+    }
+        xmlHttp.send(null);
+}
+    (function(){
+        if('<{$logisticsurl}>' != '/'){
+            show_logistics('<{$logisticsurl}>');
+        }
+    })();
+</script>
+

@@ -1,0 +1,107 @@
+<!-- 会员中心主内容区 -->
+<div class="page-article">
+  <!-- 预存款充值 -->
+  <div id="member_prepaid" class="member-prepaid">
+    <div class="member-title">
+      <h2><{t}>预存款充值<{/t}></h2>
+      <div class="member-more"><{t}>您当前的预存款余额为<{/t}>：<b class="price"><{$total|cur_odr}></b></div>
+    </div>
+
+    <div class="member-mod">
+      <form action="<{link app=b2c ctl=site_paycenter act=dopayment arg0=recharge}>" method="post" target="_paycenter">
+        <input type="hidden" name="payment[member_id]" value="<{$member_id}>" />
+        <input type="hidden" name="payment[return_url]" value="<{$return_url}>" />
+        <table>
+          <col width="150">
+          
+          <tbody>
+            <tr>
+              <td><{t}>输入充值金额<{/t}>：</td>
+              <td><input type="text" name="payment[money]" id="money" class="x-input" size="10" vtype="required&&positive" data-caution="请输入金额&&金额只能是大于0的数字"></td>
+            </tr>
+            <tr>
+              <td><{t}>选择支付方式<{/t}>：</td>
+              <td>
+                <ul class="payment-list">
+                  <{foreach from=$payments item="payment" key="key" name="payments"}>
+                    <li class="payment-item"><input class="payment-app" type="radio" name="payment[pay_app_id]" value="<{$payment.app_id}>" id="for_pay_<{$payment.app_id}>" vtype="onerequired" onchange="show1('<{$payment.app_id}>')" <{if $arr_def_payment.app_id && $arr_def_payment.app_id==$payment.app_id}> checked="checked"<{/if}><{if (!$arr_def_payment || !$is_def_payment_match) && $smarty.foreach.payments.first}> checked="checked"<{/if}>>
+                    <label for="for_pay_<{$payment.app_id}>"><{$payment.app_display_name}><{if $payment.config.method=="1" || $payment.config.method==""}><{if $payment.fee>0}><{t}> (支付费率: +<{/t}><{$payment.fee*100}>%)<{/if}><{else}><{if $payment.config.fee>0}><{t}> (支付费用: +<{/t}><{$payment.config.fee}>)<{/if}><{/if}></label></li>
+
+                    <{if $payment.support_bank}>
+                    <div class="<{$payment.app_id}>2" style="display:none">
+                    <{include file='site/paycenter/check_bank.html'}>
+                    </div>
+                    <{/if}>
+                  <{/foreach}>
+                </ul>
+                <button type="submit" class="btn btn-import btn-big" id="submit_deposit"><span><span><{t}>去充值<{/t}></span></span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+
+window.onload = function(){
+  if($('for_pay_alipaygateway').checked === true){
+    show1('alipaygateway');
+  }
+}
+function show1(app_id){
+  if(app_id =='alipaygateway'){
+    $$('div.alipaygateway2').setStyle('display','block');
+  }else{
+    $$('div.alipaygateway2').setStyle('display','none');
+  }
+}
+function qrcode_pay() {
+  var pay_id = $$(".payment-app:checked").get("value");
+  var money = $("money").get("value");
+  var dialog = new Dialog("<{link app=b2c ctl=site_paycenter act=dopayment arg0=recharge}>", {
+            width: 630,
+            title: '微信扫一扫',
+            modal: true,
+            async: 'ajax',
+            asyncOptions: {
+                method: 'post',
+                data: 'payment[member_id]=<{$member_id}>&payment[money]='+money+'&payment[pay_app_id]='+pay_id+'&payment[return_url]=<{$return_url}>',
+                onComplete: function() {
+                    dialog.position();
+                    $$('.popup-container')[0].setStyle('z-index', '10001');
+                    $$('.mask')[0].setStyle('z-index', '10000');
+                }
+            }
+   });
+}
+$("submit_deposit").addEvents({
+    'click':function(e){
+      var pay_id = $$(".payment-app:checked").get("value");
+      var money = $("money").get("value");
+      var reg = /\d+/;
+      if( reg.test(money)){
+      if( pay_id == 'wxqrpay' ){
+        new Request({
+          url:'<{link app=b2c ctl=site_passport act=ajax_check_login}>',
+          onComplete:function(rs) {
+            rs = JSON.parse(rs);
+            if( rs.status == true ){
+              qrcode_pay();
+            }else{
+              Dialog.confirm('登录超时，请重新登录。',function(e){
+                if( e ){
+                  location.href = rs.url;
+                }
+              });
+            }
+          }
+        }).post();
+        return false
+      }
+    }
+      return true;
+  }
+});
+</script>

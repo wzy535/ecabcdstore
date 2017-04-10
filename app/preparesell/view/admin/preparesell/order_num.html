@@ -1,0 +1,39 @@
+     <{if $prepare_detial}>
+    <div class="tableform">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+    <col style="width:20%"></col>
+    <col style="width:10%"></col>
+    <col class="Colgoodsid"></col>
+    <col class="Colgoodsid"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <col class="textleft"></col>
+    <thead>
+        <th><{t}>预售名称<{/t}></th>
+        <th><{t}>货品号<{/t}></th>
+        <th><{t}>货品名称<{/t}></th>
+        <th><{t}>货品规格 <{/t}></th>
+       
+        <th><{t}>订单预付订金 <{/t}></th>
+        <th><{t}>下单数量<{/t}></th>
+    </thead>
+    <tbody>
+       
+        <{foreach from=$prepare_detial item=prepare}>
+        <td><{$prepare.preparename}></td>
+        <td><{$prepare.bn}></td>
+        <td><{$prepare.name}></td>
+        <td>
+            <{$prepare.spec_info}>
+        </td>
+        <td><{$prepare.preparesell_price|cur}></td>
+        <td><{$prepare.num}></td>
+        </tr>
+        <{/foreach}>
+        
+    </tbody>
+    </table>
+</div>
+<{else}>
+        该活动暂时没有支付订金的订单
+        <{/if}>

@@ -1,0 +1,68 @@
+<div class="full-screen">
+    <header>
+    <div class="a-bar">
+        <a href="javascript:history.back()" class="a-back">
+            <i class="arr left"></i>
+            返回
+        </a>
+        <div class="a-name">
+            物流信息查询
+        </div>
+    </div>
+    </header>
+    <div class="col4">
+        <div class="col">
+            <div class="section2">
+                基本信息
+            </div>
+            <div class="section3">
+                快递公司：<{$delivery.0.logi_name}><br>
+                快递单号：<{$delivery.0.logi_no}>
+            </div>
+        </div>
+    </div>
+    <div class="col4">
+        <div class="col">
+            <div class="section2">
+                查询结果
+            </div>
+            <div class="section3">
+            </div>
+        </div>
+    </div>
+<!--
+    <div style="position:fixed; bottom:0;left:30%;background-color:rgb(252, 107, 0);width:40%; text-align: center;font-size: 32px;"><a href="javascript:history.back()"style="color:white">返回</a></div>
+-->
+</div>
+<script>
+function show_logistics(url) {
+    var logistics = $('div.section3');
+    var xmlHttp;
+    try{
+        xmlHttp=new XMLHttpRequest();        
+    }catch(e){
+        try{
+            xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+        }catch(e){
+            try{
+                xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }catch(e){
+                return false;
+            }
+        }
+    }
+    xmlHttp.open('post',url);
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            logistics[1].innerHTML = xmlHttp.responseText;
+        }
+    }
+        xmlHttp.send(null);
+}
+    (function(){
+        if('<{$logisticsurl}>' != '/'){
+            show_logistics('<{$logisticsurl}>');
+        }
+    })();
+</script>
+

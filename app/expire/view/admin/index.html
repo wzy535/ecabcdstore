@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title><{$app_name}></title>
+	</head>
+
+	<body>
+		<table border="1" cellspacing="0" cellpadding="3" bgcolor="#eeeeee">
+			<tr bgcolor="#fff">
+				<th>商品名称</th>
+				<th>商品价格</th>
+			</tr>
+		<{foreach from=$info item=item key=key}>
+			<tr bgcolor="#fff">
+			<td><{$item['name']}></td>
+			<td><{$item['price']}></td>
+			</tr>
+		<{/foreach}>
+		</table>
+	</body>
+</html>

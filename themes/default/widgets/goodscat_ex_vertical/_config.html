@@ -1,0 +1,138 @@
+<div class="tableform widgetconfig" id="goodscat_ex_vertical_config">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    <tr>
+	            <th>展示设置:</th>
+	                <td>
+	                    <label>
+	                    	<input type="checkbox" disabled=true name="show_cat_lv1" value="1"  checked  /> 
+	                    	 展示一级分类
+	                    </label>
+	                    <label>
+	                    	<input type="checkbox" name="show_cat_lv2" value="1" <{if $setting.show_cat_lv2}> checked <{/if}> /> 
+	                    	 展示二级分类
+	                    </label>
+	                    <label>
+	                    	<input type="checkbox" name="show_cat_lv3" value="1" <{if $setting.show_cat_lv3}> checked <{/if}> /> 
+	                    	 展示三级分类
+	                    </label>
+	                     <label>
+	                    	<input type="checkbox" name="show_cat_sale" value="1" <{if $setting.show_cat_sale}> checked <{/if}> /> 
+	                    	 展示分类关联商品级促销信息
+	                    </label>
+	                     <label>
+	                    	<input type="checkbox" name="show_cat_brand" value="1" <{if $setting.show_cat_brand}> checked <{/if}> /> 
+	                    	 展示分类所属类型关联品牌信息
+	                    </label>
+	                     <label>
+	                    	<input type="checkbox" name="redundancy_catlv2" value="1" <{if $setting.redundancy_catlv2}> checked <{/if}> /> 
+	                    	 在不弹出情况下冗余展示2级分类
+	                    </label>
+	                </td>
+	    </tr>
+	    <tr>
+	               <th>弹出效果:</th>
+	                <td>
+	                 <div class="span-auto division">
+	                    <label>
+	                    	<p>分类弹出方向：<em class="note">默认向右</em></p>
+	                    	<input type="checkbox"   name="box_left"  value="right" <{if $setting.box_left}>checked<{/if}>/>向左侧弹出
+	                    </label>
+	                 </div>
+	                 <div class="span-auto division">
+	                    <label>
+	                    	<p>分类弹出投影：</p>
+	                    	<input type="checkbox"   name="box_flex" value="1" <{if $setting.box_flex}>checked<{/if}>/>分类弹出有投影
+	                    </label>
+	                 </div>
+	                  <div class="span-auto division">
+	                    <label>
+	                    	<p>分类弹出边框宽度：</p>
+	                    	<input type="text"  class="x-input"  name="box_border_width" value="<{$setting.box_border_width}>" />px
+	                    </label>
+	                 </div>
+	             </td>
+	    </tr>
+	     <tr>
+	               <th>尺寸设置:</th>
+	                <td>
+	                 <div class="span-auto division">
+	                    <label>
+	                    	<p>一级分类容器宽度：</p>
+	                    	<input type="text" class="x-input"  name="container_width" value="<{$setting.container_width}>" /> px
+	                    </label>
+	                 </div>
+	                  <div class="span-auto division">
+	                    <label>
+	                    	<p>二级分类宽度百分比：<em class="note">是指占二、三级分类所在容器百分比</em></p>
+	                    	<input type="text" class="x-input"  name="cat_lv2_width" value="<{$setting.cat_lv2_width}>" /> ％
+	                    </label>
+	                 </div>
+	                 <div class="span-auto division">
+	                     <label>
+	                    	<p>弹出分类容器宽度：</p>
+	                    	<input type="text" class="x-input"  name="box_width" value="<{$setting.box_width}>" /> px
+	                    </label>
+	                   </div>
+	                   <div class="span-auto division">
+	                    <label>
+	                    	<p>弹出分类容器促销及品牌信息宽度百分比：</p>
+	                    	<input type="text" class="x-input"  name="box_link_width" value="<{$setting.box_link_width}>" /> %
+	                    </label>
+	                   </div>
+	                    <div class="span-auto division">
+	                    <label>
+	                    	<p>品牌logo最大宽度：</p>
+	                    	<input type="text" class="x-input"  name="brand_logo_maxwidth" value="<{$setting.brand_logo_maxwidth}>" /> px
+	                    </label>
+	                   </div>
+	                      <!--  <div class="span-auto division">
+	                	<label>
+	                    		<p>每次最多弹出展示多少条商品促销活动标题：</p>
+	                    		<input type="text" class="x-input"  name="salelist_limit" value="<{$setting.salelist_limit}>" /> 条
+	                   	 </label>
+	                   </div> -->
+	                </td>
+	    </tr>
+	    <tr>
+	    	<th>其他设置:</th>
+	    	<td>
+	    	   <div class="span-auto division">
+	                    <label>
+	                    	<p>分类链接在新窗口打开？</p>
+	                    	<input type="checkbox" name="target_blank" value="1" <{if $setting.target_blank}> checked <{/if}> />是
+	                    </label>
+	                 </div>
+	                 <div class="span-auto division">
+	                    <label>
+	                    	<p>相关促销标题</p>
+	                    	<input type="text" name="sales_title" value="<{$setting.sales_title}>"  class="x-input"/>
+	                    </label>
+	                 </div>
+	                 <div class="span-auto division">
+	                    <label>
+	                    	<p>相关品牌标题</p>
+	                    	<input type="text" name="brand_title" value="<{$setting.brand_title}>"  class="x-input"/>
+	                    </label>
+	                 </div>
+	    	</td>
+	    </tr>
+    </table>
+    </div>
+
+<script type="text/javascript">
+	$('goodscat_ex_vertical_config').getParent('form').addEvent('submit',function(){
+		this.getElements('input[type=checkbox]').each(function(item){
+			if(!item.checked)item.value = "";item.checked = true;
+		});
+	});
+	$$('input[name=show_cat_lv2]').addEvent('change',function(){
+		var extendCheckbox = $$('input[name=show_cat_lv3],input[name=redundancy_catlv2]');
+		if(this.checked){
+			extendCheckbox.removeProperty('disabled');			
+		}else{
+			extendCheckbox.set({'disabled':true,'checked':false});			
+		}
+	}).fireEvent('change');
+            
+ 
+</script>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <{header}>
+        <link rel="stylesheet" href="images/styles.css" />
+    </head>
+    <body>
+        <{require file="block/header.html"}>
+        <div class="center">
+            <div class="page">
+                <div class="bread-crumbs">
+                    <{widgets id="bread_crumbs"}>
+                </div>
+                <div class="section">
+                    <div class="lsidebar">
+                        <{widgets id="lsidebar"}>
+                    </div>
+                    <div class="right-main-margin">
+                        <{main}>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <{require file="block/footer.html"}>
+    </body>
+</html>

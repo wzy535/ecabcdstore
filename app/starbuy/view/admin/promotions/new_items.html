@@ -1,0 +1,17 @@
+<{capture name="listBody"}>
+<div>
+    <{if $item.extend}>
+    <{assign var=newprice value=$item.extend.newprice}>
+    <{assign var=initnum value=$item.extend.initnum}>
+    <{else}>
+    <{assign var=newprice value=$item.price}>
+    <{assign var=initnum value="100"}>
+    <{/if}>
+    <{$item.spec_info}>&nbsp;&nbsp;&nbsp;&nbsp;<{t}>销售原价：<{/t}><{$item.price|cur_odr}>&nbsp;&nbsp;&nbsp;&nbsp;<{t}>促销价：<{/t}>
+    <{input name="extend[{$id}][newprice]" value=$newprice type="positive" required="true" style="width:50px;text-align:right" }>&nbsp;&nbsp;
+    &nbsp;&nbsp;<{t}>现有库存：<{/t}><{$item.store-$item.freez}>
+    <input type="hidden" name="oldprice[<{$id}>]" value="<{$item.price}>" >
+    &nbsp;&nbsp;<{t}>初始销售量：<{/t}>
+    <{input name="extend[{$id}][initnum]" class="initnum" size="5" value=$initnum type="positive" required="true" style="width:30px;text-align:right" }>&nbsp;&nbsp;
+</div>
+<{/capture}>

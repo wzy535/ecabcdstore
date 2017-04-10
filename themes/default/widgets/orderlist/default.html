@@ -1,0 +1,30 @@
+<div id="order_<{$widgets_id}>" class="new-order-list" style='overflow:hidden;height:<{$data.setting.height|default:40}>px'>
+    <ul class="order-list" >
+        <{foreach name=outer item=contact from=$data key=key}>
+        <{if $key!=='setting'}>
+        <li class="order-item">
+        <span class="order-name">
+            <{$data.$key.ship_name}>
+        </span>
+        <span class="order-id"><{t}>订单号<{/t}><{$data.$key.order_id|cut:12:'***'}></span>
+        <span class="order-state"><{if $data.$key.ship_status == '0'}><{t}>未发货<{/t}><{elseif $data.$key.ship_status == '1'}><{t}>已发货<{/t}><{elseif $data.$key.ship_status == '2'}><{t}>部分发货<{/t}><{/if}></span>
+        <span class="order-date"><{$data.$key.date}></span>
+        </li>
+        <{/if}>
+        <{/foreach}>
+    </ul>
+</div>
+<script>
+    window.addEvent('domready', function(){
+        new Slide('order_<{$widgets_id}>',{
+            content:'.order-list',
+            steps:<{$data.setting.steps|default:1}>,
+            hasTriggers:false,
+            interval:3000,
+            duration:<{$data.setting.roll_speed|default:200}>,
+            effect:'scrolly',
+            autoplay:true,
+            viewStep:<{$data.setting.pageNum}>
+        });
+    });
+</script>

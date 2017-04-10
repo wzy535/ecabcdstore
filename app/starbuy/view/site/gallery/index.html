@@ -1,0 +1,445 @@
+<div id="main" class="clearfix">
+  <!-- 商品列表开始 -->
+  <div class="page-maincontent">
+    <!-- 排序状态条 -->
+    <{if $goodsData}>
+    <div id="groupbuy_sortbar" class="groupbuy-sortbar clearfix">
+      <div class="groupbuy-sort">
+        <strong>全部</strong>
+        <a href="javascript:void(0);" class="action-sort <{if $orderby_sql == 'promotion_price asc' }>active<{/if}>" data-sort="promotion_price asc"><em>默认</em></a>
+        <!--
+        <a href="javascript:void(0);" <{if $orderby_sql == 'price desc' || $orderby_sql == 'price asc'}>class="action-sort <{$orderby_sql|replace:' ':'-'}> active" data-sort="<{$orderby_sql}>"<{else}> class="action-sort price-desc" data-sort="price desc"<{/if}>><em>折扣<span class="icon desc">&#x2a;</span><span class="icon asc">&#x2b;</span></em></a>
+        -->
+        <a href="javascript:void(0);" class="action-sort <{if $orderby_sql == 'promotion_price desc'}> active<{/if}>" data-sort="promotion_price desc"><em>价格<span class="icon">&#x2b;</span></em></a>
+        <a href="javascript:void(0);" class="action-sort <{if $orderby_sql == 'initial_num desc'}> active<{/if}>" data-sort="initial_num desc"><em>销量<span class="icon">&#x2a;</span></em></a>
+        <input type="hidden" name="orderby" class="action-orderby" value="">
+      </div>
+      <div class="mini-pageview">
+        <span class="page-count"><span class="page-current"><{$page}></span>/<span class="page-total"><{$pagetotal}></span></span>
+        <span class="page-action"><a href="javascript:void(0);" class="flip prev<{if $page==1}> over<{/if}>"><i class="icon">&#x34;</i> 上一页</a><a href="javascript:void(0);" class="flip next<{if $pagetotal==1}> over<{/if}>">下一页 <i class="icon">&#x35;</i></a></span>
+      </div>
+    </div>
+    <div id="groupbuy_show" class="groupbuy-show">
+      <{if $goodsData}>
+        <{include file='site/gallery/type/grid.html'}>
+      <{/if}>
+    </div>
+    <{/if}>
+    <div id="groupbuy_upcoming" class="groupbuy-upcoming auto-bind-widget" data-widget-type="Switchable" data-widget-config="{eventType:'click', effect: 'scrollx', haslrbtn:true,disableCls: 'disabled',steps:3,viewStep:3,autoplay:false,circle:false}">
+    <{if $releasedgoodsData}>
+      <div class="title">
+        <h2>即将开售</h2>
+        <div class="more">
+          <div class="prev disabled"><i class="icon">&#x63;</i></div>
+          <div class="switchable-triggerBox">
+              <{foreach from=$releasedgoodsData item=goods key=key name="item"}>
+              <{if $smarty.foreach.item.iteration%4===1}>
+                <{if $smarty.foreach.item.iteration==1}>
+                  <i class="icon active">&#x50;</i>
+                <{else}>
+                  <i class="icon ">&#x50;</i>
+                <{/if}>
+              <{/if}>
+              <{/foreach}>
+          </div>
+          <div class="next"><i class="icon">&#x64;</i></div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="groupbuy-grid">
+          <ul class="clearfix switchable-content">
+              <{foreach from=$releasedgoodsData item=goods key=key name="item"}>
+            <li class="goods-item">
+              <div class="goods-pic">
+                  <a href="<{link app=starbuy ctl=site_team act=index arg0=$goods.products.product_id arg1=$goods.products.special_typeid}>"><img class="action-goods-img" alt="<{$goods.name}>" src="<{$goods.image_default_id|default:$imageDefault.S.default_image|storager:'m'}>"></a>
+              </div>
+              <div class="goods-info">
+                  <h3 class="goods-name"><a href="<{link app=starbuy ctl=site_team act=index arg0=$goods.products.product_id arg1=$goods.products.special_typeid}>"><{$goods.name}></a></h3>
+                <div class="goods-price">
+                    <ins class="price"><{$goods.products.price|cur_odr}></ins>
+                    <del class="price"><{$goods.products.mktprice|cur_odr}></del>
+                </div>
+                <{if $goods.products.remind_time}>
+                <div class="goods-actions">
+                    <{if $goods.products.msgbox_remind && $member_id == 0}>
+                    <a href="<{link app=b2c ctl=site_passport act=login}>"><button class="btn btn-flag btn-caution action-subscribe" type="button"><span><span>订阅提醒</span></span></button></a>
+                    <{elseif $goods.products.all_remind}>
+                    <input type="text" vtype="required" name="goal" id="" class="x-input" placeholder="请输入手机号码或邮箱" autocomplete="off" data-caution="对不起，您输入的信息不符合规则！"><button class="btn btn-flag btn-caution action-subscribe" type="button"><span><span>订阅提醒</span></span></button>
+                    <{elseif $goods.products.email_remind}>
+                    <input type="text" vtype="required&&email" name="goal" id="" class="x-input" placeholder="请输入邮箱" autocomplete="off" data-caution="对不起，您输入的信息不符合规则！"><button class="btn btn-flag btn-caution action-subscribe" type="button"><span><span>订阅提醒</span></span></button>
+                    <{elseif $goods.products.sms_remind}>
+                    <input type="text" vtype="required&&mobile" name="goal" id="" class="x-input" placeholder="请输入手机号码" autocomplete="off" data-caution="对不起，您输入的信息不符合规则！"><button class="btn btn-flag btn-caution action-subscribe" type="button"><span><span>订阅提醒</span></span></button>
+                    <{else}>
+                    <input type="text" disabled="disabled" name="" id="" class="x-input" placeholder="提醒会以站内信的方式发送，请关注" autocomplete="off"><button class="btn btn-flag btn-caution action-subscribe" type="button"><span><span>订阅提醒</span></span></button>
+                    <{/if}>
+                    
+                    <input type="hidden" name="type_id" value="<{$type_id}>">
+                    <input type="hidden" name="remind_time" value="<{$goods.products.remind_time}>">
+                    <input type="hidden" name="begin_time" value="<{$goods.products.begin_time}>">
+                    <input type="hidden" name="product_id" value="<{$goods.products.product_id}>">
+                    <input type="hidden" name="member_id" value="<{$login_id}>">
+                </div>
+                <{/if}>
+              </div>
+            </li>
+            <{/foreach}>
+           </ul>
+        </div>
+      </div>
+    </div>
+    <div id="product_notify" class="product-notify" style="display:none;">
+      <p class="desc"><{t}>该货品暂时缺货，请在下面输入您的邮箱地址或手机号码，当我们有现货供应时，我们会发送邮件通知您！<{/t}></p>
+      <form class="form" method="post" action="<{link app=b2c ctl=site_product act=toNotify}>">
+        <input type="hidden" name="item[0][goods_id]" value="">
+        <input type="hidden" name="item[0][product_id]" value="">
+        <ul>
+          <li class="form-item">
+            <label for="email" class="form-label"><{t}>邮箱地址<{/t}>：</label>
+            <span class="form-act">
+              <{input type="text" name="email" id="" size="30" vtype="required&&email"}>
+            </span>
+          </li>
+          <li class="form-item">
+            <label for="cellphone" class="form-label"><{t}>手机号码<{/t}>：</label>
+            <span class="form-act">
+              <{input type="text" name="cellphone" id="" size="30" vtype="required"}>
+            </span>
+          </li>
+          <li class="form-item form-item-last">
+            <label class="form-label"></label>
+            <span class="form-act">
+              <{button type="submit" class="btn-caution" label=$___b2c="提交"|t:'b2c' rel="_request"}>
+            </span>
+          </li>
+        </ul>
+      </form>
+    </div>
+  <{/if}>
+  </div>
+</div>
+
+<{assign var='imageset' value=$env.conf.image.image.set}>
+<script>
+var Router = {
+    'filter': {
+        query:'<{link app=starbuy ctl=site_special act=ajax_get_goods}>'},
+    'subscribe': {
+        query: '<{link app=starbuy ctl=site_special act=ajax_remind_save}>'}
+};
+
+var Query = function(url, data, update, options) {
+    var self = this;
+    this.update = function(url, data, update, options) {
+        options = Object.merge({
+            url: url,
+            link: 'ignore',
+            update: update
+        }, options || {});
+        if(update) new Request.HTML(options).post(data);
+        else new Request(options).post(data);
+    };
+    this.subscribe = function(data, fn) {
+        var url = Router.subscribe.query;
+        self.update(url, data, null, {
+            onSuccess: function(rs) {
+                if(rs) {
+                    fn && fn(rs);
+                }
+            }
+        })
+    };
+    this.filter = function(data, fn){
+        var url = Router.filter.query;
+        // var mask = new Mask({
+        //     width: '100%',
+        //     height: '100%',
+        //     'class': 'mini-mask',
+        //     'html': '<span class="mask-loading"></span>',
+        //     'effect': false,
+        //     position: true,
+        //     pins: true
+        // });
+        // if(Browser.ie) {
+        //     mask.element.setStyle('background-color', Browser.version == 9 ? 'rgba(255,255,255,0.1)' : '');
+        // }
+        self.update(url,data,Module.groupbuy.show, {
+            onRequest:function() {
+            //     mask.show();
+            },
+            onSuccess:function(rs){
+                // mask.hide();
+                new DataLazyLoad({img:'data-src', lazyDataType:'img',onAfter:function(img){
+                    if(Browser.ie6) fixImageSize(img);
+                }});
+                autoGridLayout(Module.groupbuy.show.getElements('.groupbuy-grid .goods-item'));
+                updateNum();
+                miniCart.init();
+                fn&&fn(rs);
+            }
+        });
+    };
+    this.addtocart = function(url, data, target) {
+        var form = $('_addtocart_submitform') || new Element('form#_addtocart_submitform',{
+            action: url,
+            method: 'post',
+            target: target,
+            style: 'display:none'
+        }).inject(document.body);
+        var formElements = Array.from(data).invoke('clone', false);
+        form.empty().adopt(formElements).submit();
+    };
+};
+
+Query = new Query;
+
+// Module = new Module('groupbuy', ['sortbar', 'show', 'upcoming']);
+
+Module('groupbuy', ['sortbar', 'show', 'upcoming']).addEvents({
+    'click:relay(.action-sort)':function(e){
+        e.preventDefault();
+        toggleOrderby(this);
+        if(!this.hasClass('active') || this.match('[class*=price-]')) {
+            Query.filter(getData());
+        }
+        toggleActive(this);
+    },
+    'change:relay(.action-orderby)':function(e) {
+        var sort = Module.elements('groupbuy.sortbar','.action-sort');
+        var hl = sort.every(function(s){
+            var sortby = s.get('data-sort');
+            var order = this.value;
+            if(order.indexOf('price ') === 0 && sortby.indexOf('price ') === 0) {
+                if(order !== sortby) {
+                    toggleOrderby(s, false);
+                }
+                return false;
+            }
+            if(order == sortby) {
+                return false;
+            }
+            return true;
+        }, this);
+        Query.filter(getData());
+    },
+    'click:relay(.action-showmode)':function(e){
+        e.preventDefault();
+        if(this.hasClass('active')) return;
+        toggleActive(this);
+        Module.element('groupbuy.sortbar','input[name=showtype]').value = this.get('data-show-type');
+        Query.filter(getData());
+    },
+    'change:relay(.action-gtags,.action-available)':function(e) {
+        Query.filter(getData());
+    },
+    'click:relay(a.flip:not(.over))':function(e){
+        e.preventDefault();
+        var self = this;
+        Query.filter(getData(this), function(e){
+            self.getSiblings('.over').removeClass('over');
+            var page = getFlipPage();
+            var parent = self.getParent();
+            if(page <= 1) parent.getElement('.prev').addClass('over');
+            else if(page >= getPage().total) parent.getElement('.next').addClass('over');
+        });
+    },
+    'mouseenter:relay(.groupbuy-grid .goods-item)': function(e) {
+        this.addClass('hover');
+    },
+    'mouseleave:relay(.groupbuy-grid .goods-item)': function(e) {
+        this.removeClass('hover');
+    },
+    'click:relay(.action-addtocart)':function(e){
+        if(this.target != '_dialog_minicart') {
+            var item = this.getParent('.goods-item');
+            var num = item.getElement('.action-quantity-input');
+            if(!num) return;
+            var ginfo = {
+                gid: item.getElement('[name="goods[goods_id]"]').value,
+                pid: item.getElement('[name="goods[product_id]"]').value,
+                num: num.value
+            }
+            var url = '<{link app=b2c ctl=site_cart act=add arg0=goods arg1="{gid}" arg2="{pid}" arg3="{num}"}>';
+            this.href = url.substitute(ginfo);
+
+            // Query.addtocart(this.href, data, this.target);
+        }
+    },
+    'click:relay(.action-notify)': function(e) {
+        var id = this.get('rel').split('::');
+        var dialog = new Dialog($('product_notify').wrapped(), {
+            title:'到货通知',
+            width: 400,
+            modal: {
+                'class': 'cover'
+            },
+            onLoad: function(){
+                var content = this.content;
+                var holder = content.getElements('input[type=hidden]');
+                var handle = content.getElement('[rel=_request]');
+                holder[0].value = id[0];
+                holder[1].value = id[1];
+                handle && handle.store('_ajax_config',{
+                    onSuccess:function(rs){
+                        if(rs && rs[0]) {
+                            if(rs[0]['true']) {
+                                content.getElement('.product-notify').innerHTML = '<div class="success">联系方式已经成功提交，到货后会立刻通知您。</div>';
+                                dialog.hide.delay(3000, dialog);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    },
+    'mouseenter:relay(.goods-item)': function(e) {
+        this.addClass('hover');
+        Placeholder.show(this.getElement('.goods-actions input'));
+    },
+    'mouseleave:relay(.goods-item)': function(e) {
+        this.removeClass('hover');
+        Placeholder.hide(this.getElement('.goods-actions input'));
+    },
+    'click:relay(.action-subscribe)': function(e) {
+        var input = this.getPrevious('input'); 
+        if(!validate(input)) return false;
+        Query.subscribe(input.getParent().toQueryString(), function(rs) {
+            rs = JSON.decode(rs);
+            if(rs.error) {
+                    if(rs.error == "您已经订阅过"){
+                        Message.error(rs.error)
+                        input.value = '';
+                        return ;
+                    }else{
+                    input.value = '';
+                    validate(input); 
+                    return ;
+                    }
+            }         
+            Message.success(rs.msg);
+            this.disabled = true;
+            input.addClass('disabled');
+        })
+    }
+});
+
+function getData(el) {
+    var cat = 'type_id=<{$filter.type_id}>';
+    var vcat = 'virtual_cat_id=<{$filter.virtual_cat_id}>';
+    var filter= [cat,vcat];
+    var param = location.search;
+    if(param) {
+        param = param.split('?')[1];
+        filter.push(param);
+    }
+    var page;
+    if(el) page = 'page=' + getFlipPage(el);
+    var data = filter.concat(decodeURI(Module.groupbuy.sortbar.toQueryString()), page);
+    data = data.join('&').replace(/-/g, '[]=');
+    return data;
+}
+
+//延迟加载图片
+new DataLazyLoad({
+    img:'data-src',
+    lazyDataType:'img',
+    onAfter:function(img){
+        //ie6下缩放图片
+        if(Browser.ie6) {
+            fixImageSize(img);
+        }
+    }
+});
+
+Module = new Module('groupbuy', ['sortbar', 'show', 'upcoming']);
+
+//列表固定宽度计算每列外边距
+autoGridLayout(Module.elements('groupbuy.show', '.groupbuy-grid .goods-item'));
+autoGridLayout(Module.elements('groupbuy.upcoming', '.goods-item'), null, false);
+
+function getFlipPage(el) {
+    var page = getPage().current;
+    if(el) {
+        if(el.hasClass('next')) page += 1;
+        else if(el.hasClass('prev')) page -= 1;
+        else page = el.get('text');
+    }
+    return page;
+}
+function getPage() {
+    var pagedata = {};
+    var pagelimit = '<{$pageLimit|default:20}>';
+    try {
+        pagedata = JSON.decode(Module.groupbuy.show.getElement('.action-pagedata').value) || {};
+    }catch(e){}
+    return {
+        sum: pagedata.total || 0,
+        current: pagedata.pagecurrent || 1,
+        total: pagedata.pagetotal || 1
+    };
+}
+
+function updateNum() {
+    var page = getPage();
+    Module.element('groupbuy.sortbar', '.page-current').innerHTML = page.current;
+    Module.element('groupbuy.sortbar', '.page-total').innerHTML = page.total;
+    var prev = Module.element('groupbuy.sortbar', '.page-action .prev');
+    var next = Module.element('groupbuy.sortbar', '.page-action .next');
+    if(page.total == 1) {
+        prev.addClass('over');
+        next.addClass('over');
+    }
+    else if(page.total > 1){
+        next.removeClass('over');
+        if(page.total == page.current) {
+            prev.removeClass('over');
+            next.addClass('over');
+        }
+        else {
+            if(page.current == 1) {
+                prev.addClass('over');
+            }
+            else {
+                prev.removeClass('over');
+            }
+            next.removeClass('over');
+        }
+    }
+}
+
+function hideDropdown(el) {
+    el.removeClass('current');
+}
+
+function toggleText(el, attr) {
+    attr = attr || 'data-toggle';
+    var a = el.get(attr);
+    var b = el.get('text');
+    el.set(attr, b).set('text', a);
+}
+
+function toggleActive(el, cls) {
+    if(!el) return;
+    cls = cls || 'active';
+    el.addClass(cls).getSiblings('.'+cls).removeClass(cls);
+}
+
+function toggleOrderby(el, set){
+    // if(el.hasClass('active')) return;
+    var hidden = Module.element('groupbuy.sortbar', '.action-orderby');
+    var sort = '';
+    if(el.hasClass('price-desc')) {
+        el.swapClass('price-desc', 'price-asc');
+        sort = 'price asc';
+        el.set('data-sort', sort);
+    }
+    else if(el.hasClass('price-asc')) {
+        el.swapClass('price-asc', 'price-desc');
+        sort = 'price desc';
+        el.set('data-sort', sort);
+    }
+    else {
+        sort = el.get('data-sort');
+    }
+    if(set !== false) hidden.value = sort;
+}
+</script>
