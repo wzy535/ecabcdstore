@@ -122,11 +122,11 @@ class b2c_order_dlytype
         {
             foreach ($arr_extends_checkout as $obj)
             {
-                if ( method_exists($obj,'change_filter') )
-                    $obj->change_filter($filter,$pay_app_id);
+                if ( method_exists($obj, 'change_filter') )
+                    $obj->change_filter($filter, $pay_app_id);
             }
         }
-        $dlytype = $objdlytype->getList('*',$filter,0,-1,'ordernum ASC');
+        $dlytype = $objdlytype->getList('*', $filter, 0, -1, 'ordernum ASC');
 
         if ($dlytype && is_array($dlytype))
         {
@@ -188,7 +188,7 @@ class b2c_order_dlytype
                 }
             }
 
-            $return = array_merge($setting_1,$setting_0);
+            $return = array_merge($setting_1, $setting_0);
             ksort($return);
             return $return;
         }

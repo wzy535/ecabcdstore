@@ -6,7 +6,7 @@
 
     <workground name="临期信息" id="expire.wrokground.product" app="expire" controller="admin_product" action="index" order="1">
         <menugroup name="产品信息">
-            <menu controller='admin_product' action='index' permission='expire' display='true' order="5">产品</menu>
+            <menu controller='admin_product' action='index' permission='theme' display='true' order="5">产品</menu>
         </menugroup>
     </workground>
 

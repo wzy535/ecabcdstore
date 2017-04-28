@@ -1206,21 +1206,21 @@ class b2c_ctl_admin_order extends desktop_controller{
             $arrPaymentInfo = $objPaymemtcfg->getPaymentInfo($sdf['payment']);
 
         $time = time();
-        $sdf['refund_id'] = $refund_id = $refunds->gen_id();
-        $sdf['pay_app_id'] = $sdf['payment'];
-        $sdf['member_id'] = $sdf_order['member_id'] ? $sdf_order['member_id'] : 0;
-        $sdf['currency'] = $sdf_order['currency'];
-        $sdf['paycost'] = 0;
-        $sdf['cur_money'] = $sdf['money'];
-        $sdf['money'] = $this->objMath->number_div(array($sdf['cur_money'], $sdf_order['cur_rate']));
-        $sdf['t_begin'] = $time;
-        $sdf['t_payed'] = $time;
-        $sdf['t_confirm'] = $time;
-        $sdf['pay_object'] = 'order';
-        $sdf['op_id'] = $this->user->user_id;
-        $sdf['op_name'] = $this->user->user_data['account']['login_name'];
-        $sdf['status'] = 'ready';
-        $sdf['app_name'] = $arrPaymentInfo['app_name'];
+        $sdf['refund_id']   = $refund_id = $refunds->gen_id();
+        $sdf['pay_app_id']  = $sdf['payment'];
+        $sdf['member_id']   = $sdf_order['member_id'] ? $sdf_order['member_id'] : 0;
+        $sdf['currency']    = $sdf_order['currency'];
+        $sdf['paycost']     = 0;
+        $sdf['cur_money']   = $sdf['money'];
+        $sdf['money']       = $this->objMath->number_div(array($sdf['cur_money'], $sdf_order['cur_rate']));
+        $sdf['t_begin']     = $time;
+        $sdf['t_payed']     = $time;
+        $sdf['t_confirm']   = $time;
+        $sdf['pay_object']  = 'order';
+        $sdf['op_id']       = $this->user->user_id;
+        $sdf['op_name']     = $this->user->user_data['account']['login_name'];
+        $sdf['status']      = 'ready';
+        $sdf['app_name']    = $arrPaymentInfo['app_name'];
         $sdf['app_version'] = $arrPaymentInfo['app_version'];
 
         $obj_refunds = kernel::single("ectools_refund");
@@ -2664,29 +2664,29 @@ class b2c_ctl_admin_order extends desktop_controller{
         $aShip = $shipping->dump($sdf['shipping_id']);
 
         $sdf['shipping'] = array(
-            'shipping_id'=>$sdf['shipping_id'],
-            'shipping_name'=>$aShip['dt_name'],
-            'cost_shipping'=>$sdf['cost_freight'],
-            'is_protect'=>$sdf['is_protect'],
-            'cost_protect'=>$sdf['cost_protect'],
+            'shipping_id'   => $sdf['shipping_id'],
+            'shipping_name' => $aShip['dt_name'],
+            'cost_shipping' => $sdf['cost_freight'],
+            'is_protect'    => $sdf['is_protect'],
+            'cost_protect'  => $sdf['cost_protect'],
         );
 
 
 
         $sdf['payinfo'] = array(
-            'cost_payment'=>$sdf['cost_payment'],
-            'pay_app_id' => $sdf['payment']
+            'cost_payment'  => $sdf['cost_payment'],
+            'pay_app_id'    => $sdf['payment']
             );
 
         $sdf['consignee'] = array(
-            'name'=>$sdf['receiver_name'],
-            'addr'=>$sdf['ship_addr'],
-            'zip'=>$sdf['ship_zip'],
-            'telephone'=>$sdf['ship_tel'],
-            'r_time'=>$sdf['ship_time'],
-            'mobile'=>$sdf['ship_mobile'],
-            'email'=>$sdf['ship_email'],
-            'area'=>$sdf['ship_area']
+            'name'  => $sdf['receiver_name'],
+            'addr'  => $sdf['ship_addr'],
+            'zip'   => $sdf['ship_zip'],
+            'telephone' => $sdf['ship_tel'],
+            'r_time'    => $sdf['ship_time'],
+            'mobile'    => $sdf['ship_mobile'],
+            'email' => $sdf['ship_email'],
+            'area'  => $sdf['ship_area']
         );
 
         $sdf['tax_title'] = $sdf['tax_company'];

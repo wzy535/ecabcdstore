@@ -40,6 +40,7 @@ class desktop_finder_builder_view extends desktop_finder_builder_prototype{
 
         $this->short_object_name = substr($this->object_name,strpos($this->object_name,'_mdl_')+5);
         $this->__view = $this->get_views();
+
         if(count($this->__view) && $this->use_view_tab){
             $this->tab_view_count = 0;
             foreach((array)$this->__view as $view){

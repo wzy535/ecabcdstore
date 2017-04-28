@@ -183,12 +183,16 @@ class desktop_finder_builder_prototype{
         return $this->func_list;
     }
     function get_views(){
+
         if(!$this->use_view_tab) return array();
         list($app_id,$model) = explode('_mdl_',$this->object_name);
+        
         if($app_id!=$this->controller->app->app_id){
             return array();
         }
+
         $views_temp = array();
+
 
         if(method_exists($this->controller,'_views')){
             $views = $this->controller->_views();

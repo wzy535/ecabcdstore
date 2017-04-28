@@ -82,7 +82,7 @@ class b2c_ctl_admin_setting extends desktop_controller{
                 'site.trigger_cancelorder', //是否开启取消订单
                 'site.cancelorder_timelimit', //订单创建多少小时后，未支付取消订单
             ),
-          app::get('b2c')->_(商品列表页设置)=>array(
+          app::get('b2c')->_('商品列表页设置')=>array(
                 //'system.category.showgoods',
                 //'site.show_storage',
                 //'site.promotion.display',
@@ -215,22 +215,22 @@ class b2c_ctl_admin_setting extends desktop_controller{
                 $input_type = $typemap[$setlib[$set]['type']];
 
                 $form_input = array(
-                    'title'=>$setlib[$set]['desc'],
-                    'type'=>$input_type,
-                    'name'=>"set[".$set."]",
-                    'tab'=>$tab,
-                    'helpinfo'=>$setlib[$set]['helpinfo'],
-                    'value'=>$current_set,
-                    'options'=>$setlib[$set]['options'],
-                    'vtype' => $setlib[$set]['vtype'],
-                    'class' => $setlib[$set]['class'],
-                    'id' => $setlib[$set]['id'],
-                    'default' => $setlib[$set]['default'],
+                    'title' => $setlib[$set]['desc'],
+                    'type'  => $input_type,
+                    'name'  => "set[".$set."]",
+                    'tab'   => $tab,
+                    'helpinfo'  => $setlib[$set]['helpinfo'],
+                    'value'     => $current_set,
+                    'options'   => $setlib[$set]['options'],
+                    'vtype'     => $setlib[$set]['vtype'],
+                    'class'     => $setlib[$set]['class'],
+                    'id'        => $setlib[$set]['id'],
+                    'default'   => $setlib[$set]['default'],
                 );
-                if ($input_type=='select')
+                if ($input_type == 'select')
                     $form_input['required'] = true;
         if($cnt>0){
-             if($form_input['name']=="set[system.goods.freez.time]"){
+             if($form_input['name'] == "set[system.goods.freez.time]"){
                 if($current_set!='1'){
                     $current_set=1;
                 }

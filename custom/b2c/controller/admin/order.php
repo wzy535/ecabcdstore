@@ -26,6 +26,7 @@ class b2c_ctl_admin_order extends desktop_controller{
 
 
     public function index(){
+
         if($_GET['action'] == 'export') $this->_end_message = '导出订单';
         $group[] = array('label'=>app::get('b2c')->_('设置收货时间'),'icon'=>'download.gif','target'=>'dialog','submit'=>'index.php?app=b2c&ctl=admin_order&act=changeDeliveryTime');
         $this->finder('b2c_mdl_orders',array(
@@ -38,7 +39,11 @@ class b2c_ctl_admin_order extends desktop_controller{
                             array('label'=>app::get('b2c')->_('打印样式'),'target'=>'_blank','href'=>'index.php?app=b2c&ctl=admin_order&act=showPrintStyle'),
                             array('label'=>app::get('b2c')->_('打印选定订单'),'submit'=>'index.php?app=b2c&ctl=admin_order&act=toprint','target'=>'_blank'),
                             array('label'=>app::get('b2c')->_('自动确认收货时间'),'icon'=>'batch.gif','group'=>$group),
-                        ),'use_buildin_set_tag'=>true,'use_buildin_recycle'=>false,'use_buildin_filter'=>true,'use_view_tab'=>true,
+                        ),
+            'use_buildin_set_tag'   => true,
+            'use_buildin_recycle'   => false,
+            'use_buildin_filter'    => true,
+            'use_view_tab'          => true,
             ));
     }
 
@@ -48,6 +53,7 @@ class b2c_ctl_admin_order extends desktop_controller{
      * @return null
      */
     public function _views(){
+        //var_dump(11111);
         $mdl_order = $this->app->model('orders');
         $sub_menu = array(
             0=>array('label'=>app::get('b2c')->_('待发货'),'optional'=>false,'filter'=>array('ship_status'=>array('0','2'),'pay_status'=>array('1','2','3'),'status'=>'active','disabled'=>'false')),

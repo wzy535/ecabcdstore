@@ -19,11 +19,21 @@ class gift_ctl_admin_gift extends desktop_controller{
     public function index(){
          $this->finder('gift_mdl_ref',array(
             'title'=>app::get('gift')->_('赠品'),
+             'use_view_tab'  => true,
             'actions'=>array(
                             array('label'=>app::get('gift')->_('添加赠品'),'icon'=>'add.gif','href'=>'index.php?app=gift&ctl=admin_gift&act=add', 'target'=>"_blank"),
                         ),//'finder_aliasname'=>'gift_mdl_goods','finder_cols'=>'cat_id',
                         'object_method' => array('count'=>'count_finder','getlist'=>'get_list_finder'),
             ));
+    }
+
+    public function _views()
+    {
+        $sub_menu = array(
+            0=>array('label'=>app::get('b2c')->_('待发货'),'optional'=>false,'newcount'=>false,'filter'=>array()),
+            1=>array('label'=>app::get('b2c')->_('已发货'),'optional'=>false,'filter'=>array()),
+        );
+        return $sub_menu;
     }
 
 

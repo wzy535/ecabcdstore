@@ -90,7 +90,7 @@ class b2c_ctl_admin_specification extends desktop_controller{
         header("Cache-Control:no-store, no-cache, must-revalidate"); // HTTP/1.1
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         header('Progma: no-cache');
-         $this->pagedata['spec_default_pic'] = $this->app->getConf('spec.default.pic');
+        $this->pagedata['spec_default_pic'] = $this->app->getConf('spec.default.pic');
         $this->pagedata['spec_image_height'] = $this->app->getConf('spec.image.height');
         $this->pagedata['spec_image_width'] = $this->app->getConf('spec.image.width');
         $this->display('admin/goods/specification/spec_default_pic.html');

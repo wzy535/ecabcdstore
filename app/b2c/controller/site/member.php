@@ -1333,11 +1333,11 @@ class b2c_ctl_site_member extends b2c_frontpage{
         $member = $this->member;
         $obj_pam_members = app::get('pam')->model('members');
         $passport_login = $this->gen_url(array('app'=>'b2c','ctl'=>'site_passport','act'=>'login'));
-        $url = $this->gen_url(array('app'=>'b2c','ctl'=>'site_passport','act'=>'logout','arg0'=>$passport_login));
+        $url = $this->gen_url(array('app' => 'b2c', 'ctl' => 'site_passport', 'act'=>'logout', 'arg0' => $passport_login));
         $userPassport = kernel::single('b2c_user_passport');
         if($obj_pam_members->is_nopassword($member['member_id']) == 'true')
         {
-            $result = $userPassport->reset_passport($this->app->member_id,$_POST['passwd']);
+            $result = $userPassport->reset_passport($this->app->member_id, $_POST['passwd']);
             if($result)
             {
                 $this->splash('success',null,app::get('b2c')->_('修改成功'),true);

@@ -704,11 +704,11 @@ class b2c_ctl_site_cart extends b2c_frontpage{
 
             $ret = $currency->getFormat();
             $ret =array(
-                'decimals'=>$this->app->getConf('system.money.decimals'),
-                'dec_point'=>$this->app->getConf('system.money.dec_point'),
-                'thousands_sep'=>$this->app->getConf('system.money.thousands_sep'),
-                'fonttend_decimal_type'=>$this->app->getConf('system.money.operation.carryset'),
-                'fonttend_decimal_remain'=>$this->app->getConf('system.money.decimals'),
+                'decimals'  => $this->app->getConf('system.money.decimals'),
+                'dec_point' => $this->app->getConf('system.money.dec_point'),
+                'thousands_sep' => $this->app->getConf('system.money.thousands_sep'),
+                'fonttend_decimal_type'     => $this->app->getConf('system.money.operation.carryset'),
+                'fonttend_decimal_remain'   => $this->app->getConf('system.money.decimals'),
                 'sign' => $ret['sign']
             );
             $this->pagedata['money_format'] = json_encode($ret);
@@ -721,7 +721,7 @@ class b2c_ctl_site_cart extends b2c_frontpage{
             $company_tax_ratio = $this->app->getConf('site.company_tax_ratio'); //公司发票税率
             $tax_content = $this->app->getConf('site.tax_content'); //发票内容选项
             if($tax_content){
-                $arr_tax_content = explode(',',$tax_content);
+                $arr_tax_content = explode(',', $tax_content);
                 foreach($arr_tax_content as $tax_content_value){
                     $select_tax_content[$tax_content_value] = $tax_content_value;
                 }

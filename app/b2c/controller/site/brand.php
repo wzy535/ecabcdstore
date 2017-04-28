@@ -34,10 +34,10 @@ class b2c_ctl_site_brand extends b2c_frontpage{
 
         $title=$title['title']?$title['title']:app::get('b2c')->_('品牌');
         $this->pagedata['pager'] = array(
-            'current'=>$page,
-            'total'=>ceil($brandCount/$pageLimit),
-            'link'=>$this->gen_url(array('app'=>'b2c', 'ctl'=>'site_brand', 'act'=>'showList','full'=>1,'args'=>array(($tmp = time())))),
-            'token'=>$tmp
+            'current'   => $page,
+            'total' => ceil($brandCount/$pageLimit),
+            'link'  => $this->gen_url(array('app'=>'b2c', 'ctl'=>'site_brand', 'act'=>'showList','full'=>1,'args'=>array(($tmp = time())))),
+            'token' => $tmp
             );
 
         $imageDefault = app::get('image')->getConf('image.set');
@@ -49,9 +49,9 @@ class b2c_ctl_site_brand extends b2c_frontpage{
 
     public function index($brand_id, $page=1,$orderBy=1,$view='') {
 
-        $brandModel=$this->app->model('brand');
-        $argu=array("brand_id","brand_name","brand_url","brand_desc","brand_logo","brand_setting");
-        $argu=implode(",",$argu);
+        $brandModel = $this->app->model('brand');
+        $argu = array("brand_id","brand_name","brand_url","brand_desc","brand_logo","brand_setting");
+        $argu = implode(",",$argu);
         $result = $brandModel->getList($argu,array('brand_id'=>$brand_id));
         $result = $result[0];
         $this->set_tmpl('brand');
@@ -110,11 +110,11 @@ class b2c_ctl_site_brand extends b2c_frontpage{
     function prepareSeoData($data){
         $intro = $this->get_brand_intro($data);
         return array(
-            'shop_name'=>$this->shopname,
-            'brand_name'=>$data['brand_data']['brand_name'],
-            'brand_url'=>$data['brand_data']['brand_url'],
-            'brand_intro'=>$intro,
-            'goods_amount'=>$data['total']
+            'shop_name'     => $this->shopname,
+            'brand_name'    => $data['brand_data']['brand_name'],
+            'brand_url'     => $data['brand_data']['brand_url'],
+            'brand_intro'   => $intro,
+            'goods_amount'  => $data['total']
         );
     }
 
@@ -129,8 +129,8 @@ class b2c_ctl_site_brand extends b2c_frontpage{
     	    }
     	}
         return array(
-            'shop_name'=>$this->shopname,
-            'brand_name'=>$brand_name,
+            'shop_name'     => $this->shopname,
+            'brand_name'    => $brand_name,
         );
     }
 
